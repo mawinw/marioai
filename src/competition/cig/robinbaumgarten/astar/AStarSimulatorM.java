@@ -193,6 +193,10 @@ public class AStarSimulatorM
     	possibleActions.add(createAction(true, false, false, false, true));
     	if (canJumpHigher(currentPos, true))  possibleActions.add(createAction(true, false, false, true, true));
     	
+    	// down button //Mawinw modified
+    	// must be in if on top of unchecked ท่อ
+    	//possibleActions.add(createAction(false, false, true, false, false));
+    	
     	return possibleActions;
     }
     
@@ -249,6 +253,17 @@ public class AStarSimulatorM
      		levelScene.mario.damage+=5;
     	}
     	return levelScene.mario.damage;
+    }
+    
+    //Mawinw
+    private int getMarioKill() {
+    	 //kills done
+    	return 0;
+    }
+    //Mawinw
+    private int getMarioCoin() {
+    	//coins collected
+    	return 0;
     }
     
     // main search function
