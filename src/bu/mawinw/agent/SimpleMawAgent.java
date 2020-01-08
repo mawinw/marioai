@@ -11,6 +11,8 @@ import ch.idsia.mario.environments.Environment;
 import competition.cig.robinbaumgarten.astar.AStarSimulator;
 import competition.cig.robinbaumgarten.astar.AStarSimulatorM;
 
+import bu.mawinw.util.utility;
+
 public class SimpleMawAgent implements Agent
 {
     private String name;
@@ -57,9 +59,10 @@ public class SimpleMawAgent implements Agent
      	byte[][] scene = observation.getLevelSceneObservationZ(0);
     	float[] enemies = observation.getEnemiesFloatPos();
 		float[] realMarioPos = observation.getMarioFloatPos();
-		System.out.println(Arrays.deepToString(scene));
-		System.out.println(Arrays.toString(enemies));
-		System.out.println(Arrays.toString(realMarioPos));
+		utility.printScene(scene);
+		utility.printArray(enemies);
+		utility.printArray(realMarioPos);
+		
     	if (sim.levelScene.verbose > 2) System.out.println("Simulating using action: " + sim.printAction(action));
         
     	// Advance the simulator to the state of the "real" Mario state

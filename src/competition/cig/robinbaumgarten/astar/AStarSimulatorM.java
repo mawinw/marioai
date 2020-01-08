@@ -16,7 +16,7 @@ import competition.cig.robinbaumgarten.astar.level.Level;
 // Overview:
 // SearchNode class: A node is represented by this class, containing an action, a world state, and some more info.
 // search(): This function is the core search algorithm, searching for an optimal path
-// optimize(): Function controlling the search and extracting plans to return to the API.
+// optimize(): Function controlling the search and extracting plans to return to the API.	
 
 
 public class AStarSimulatorM 
@@ -271,6 +271,7 @@ public class AStarSimulatorM
     {
     	SearchNode current = bestPosition;
     	boolean currentGood = false;		// is the current node good (= we're not getting hurt)
+    										// Mawinw's edit : to be modified that the node is good if we collect the coin or get the kills
     	int ticks = 0;
     	int maxRight = 176;					// distance to plan to the right
     	
