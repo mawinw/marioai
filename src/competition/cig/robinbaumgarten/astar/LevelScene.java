@@ -588,5 +588,4 @@ public class LevelScene implements SpriteContext, Cloneable
 		sprites = newSprites;
 		return requireReplanning;
 	}
-	
 }

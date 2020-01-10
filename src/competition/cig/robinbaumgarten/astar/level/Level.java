@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import bu.mawinw.util.utility;
+
 
 public class Level implements Cloneable
 {
@@ -92,6 +94,47 @@ public class Level implements Cloneable
         //data = new byte[width][height];
         spriteTemplates = new SpriteTemplate[width][height];
         //observation = new byte[width][height];
+    }
+    public boolean hasCoin() {
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++) {
+	        	if(isCoin[i][j])
+	        		return true;
+        	}
+        }
+    return false;
+    }
+    public float[] nearestCoin(float mx, float my) {
+    	float[] a = new float[3];
+    	if(!hasCoin()) {
+    		a[0] = 16;
+    		a[1] = 11;
+    		a[2] = 20;
+    		return a;
+    	}
+    	float minDistance = 1000000;
+    	float coinX = 0;
+    	float coinY = 0;
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++) {
+	        	if(isCoin[i][j]) {
+	        		
+	        		float d = utility.calculateDistance((float) mx,(float) i*16,(float) my,(float) j*16);
+	        		if (d < minDistance) {
+	        			minDistance = d;
+	        			coinX = (float) i*16;
+	        			coinY = (float) j*16;
+	        		}
+	        	}
+            }
+        }
+
+		a[0] = coinX;
+		a[1] = coinY;
+		a[2] = minDistance;
+    	return a;
     }
 
     public static void loadBehaviors()

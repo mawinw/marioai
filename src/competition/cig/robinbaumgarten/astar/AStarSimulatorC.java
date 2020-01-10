@@ -134,8 +134,8 @@ public class AStarSimulatorC
 	    	// set the remaining time after we've simulated the effects of our action,
 	    	// penalising it if we've been hurt.
 	    	remainingTime = calcRemainingTime(levelScene.mario.x, levelScene.mario.xa)
-	    	 	+ (getMarioDamage() - initialDamage) * (1000000 - 100 * timeElapsed);
-	    	 	//- 0*(getMarioCoin() - initialCoin) * (1000000 - 100 * timeElapsed);
+	    	 	+ 1*(getMarioDamage() - initialDamage) * (1000000 - 100 * timeElapsed)
+	    	 	+ 5*(getMarioCoin() - initialCoin) * (1000000 - 100 * timeElapsed);
 	    	
 	    	if (isInVisitedList)
 	    		remainingTime += visitedListPenalty;
@@ -392,7 +392,24 @@ public class AStarSimulatorC
     	*/
     	bestPosition = startPos;
     	furthestPosition = startPos;
+    	nearestCoinPosition = startPos;
+    	//calculate nearest coin
     	
+    	
+    }
+    private void calculateNearestCoin() {
+    	float mx = levelScene.mario.x;
+    	float my = levelScene.mario.y;
+    	float minDist = 1000000;
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++) {
+            	isCoin[i][j] = false;
+	        	if(map[i][j] == 34) {
+		        	isCoin[i][j] = true;
+	        	}
+            }
+        }
     }
     
     // Extract the plan by taking the best node and going back to the root, 

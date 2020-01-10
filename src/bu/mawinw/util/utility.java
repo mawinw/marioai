@@ -1,6 +1,7 @@
 package bu.mawinw.util;
 
 import java.util.Arrays;
+import java.lang.Math;
 
 public class utility {
 	
@@ -45,5 +46,9 @@ public class utility {
 	public static void printArray(float[] array)
 	{
 			System.out.println(Arrays.toString(array));
+	}
+	
+	public static float calculateDistance(float x1, float y1, float x2, float y2) {
+		return (float) Math.sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
 	}
 }
