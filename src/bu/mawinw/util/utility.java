@@ -12,13 +12,29 @@ public class utility {
 			   {
 				   int block = scene[i][j];
 				   String blockString = java.lang.Integer.toString(block);
-				   int length =  blockString.length();
-				   if(block == 0) {
-					   blockString = "  "+blockString+"  ";
+				   
+				   if((i==10 && j==10)||(i==11 && j==10)) {
+					   blockString = "["+blockString+"]";
+					   int length =  blockString.length();
+					   if(block == 0) {
+						   blockString = " "+blockString+" ";
+					   }					   
+					   else {
+
+						   for(int k = 0; k < 5-length; k++) {
+							   blockString += " ";
+						   }
+					   }
 				   }
 				   else {
-					   for(int k = 0; k < 5-length; k++) {
-						   blockString += " ";
+					   int length =  blockString.length();
+					   if(block == 0) {
+						   blockString = "  "+blockString+"  ";
+					   }
+					   else {
+						   for(int k = 0; k < 5-length; k++) {
+							   blockString += " ";
+						   }
 					   }
 				   }
 				   System.out.print(blockString);

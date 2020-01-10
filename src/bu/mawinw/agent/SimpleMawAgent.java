@@ -9,7 +9,7 @@ import ch.idsia.mario.environments.Environment;
 
 
 import competition.cig.robinbaumgarten.astar.AStarSimulator;
-import competition.cig.robinbaumgarten.astar.AStarSimulatorM;
+import competition.cig.robinbaumgarten.astar.AStarSimulatorC;
 
 import bu.mawinw.util.utility;
 
@@ -17,7 +17,7 @@ public class SimpleMawAgent implements Agent
 {
     private String name;
     private boolean[] action;
-    private AStarSimulatorM sim;
+    private AStarSimulatorC sim;
     private float lastX = 0;
     private float lastY = 0;
 
@@ -32,7 +32,7 @@ public class SimpleMawAgent implements Agent
     
     {
         action = new boolean[Environment.numberOfButtons];
-        sim = new AStarSimulatorM();
+        sim = new AStarSimulatorC();
     }
 
     public boolean[] getAction(Environment observation)

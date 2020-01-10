@@ -38,6 +38,7 @@ public class Level implements Cloneable
     public byte[][] map;
     
     public boolean[] isGap;
+    public boolean[][] isCoin;
     public int[] gapHeight;
     
     public List<int[]> modifiedMapTiles = new ArrayList<int[]>(0);
@@ -77,6 +78,16 @@ public class Level implements Cloneable
         	map[i][14] = 4;
         	isGap[i] = false;
         	gapHeight[i] = 15;
+        }
+        isCoin = new boolean[width][height];
+        for (int i = 0; i < width; i++)
+        {
+            for (int j = 0; j < height; j++) {
+            	isCoin[i][j] = false;
+	        	if(map[i][j] == 34) {
+		        	isCoin[i][j] = true;
+	        	}
+            }
         }
         //data = new byte[width][height];
         spriteTemplates = new SpriteTemplate[width][height];
