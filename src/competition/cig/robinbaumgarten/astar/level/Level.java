@@ -108,9 +108,9 @@ public class Level implements Cloneable
     public float[] nearestCoin(float mx, float my) {
     	float[] a = new float[3];
     	if(!hasCoin()) {
-    		a[0] = 16;
-    		a[1] = 11;
-    		a[2] = 20;
+    		a[0] = (float) 19.99;
+    		a[1] = (float) 11.11;
+    		a[2] = (float) 22.22;
     		return a;
     	}
     	float minDistance = 1000000;

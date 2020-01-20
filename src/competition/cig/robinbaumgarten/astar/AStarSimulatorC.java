@@ -8,6 +8,7 @@ package competition.cig.robinbaumgarten.astar;
 
 import java.util.ArrayList;
 
+import bu.mawinw.util.utility;
 import ch.idsia.mario.engine.sprites.Mario;
 
 import competition.cig.robinbaumgarten.astar.level.Level;
@@ -285,6 +286,9 @@ public class AStarSimulatorC
     	int maxRight = 176;					// distance to plan to the right //mawinw: former 176
     	
     	int maxLeft = -100;					// mawinw:distance to plan to the left
+
+    	//mawinw: calculate nearest coin
+    	calculateNearestCoin(current);
     	
     	// Search until we've reached the right side of the screen, or if the time is up.
     	// mawinw: Search to the left to collect the coin
@@ -393,23 +397,21 @@ public class AStarSimulatorC
     	bestPosition = startPos;
     	furthestPosition = startPos;
     	nearestCoinPosition = startPos;
-    	//calculate nearest coin
     	
     	
     }
-    private void calculateNearestCoin() {
+    private void calculateNearestCoin(SearchNode node) {
+    	//
+    	float[] a = new float[3];
     	float mx = levelScene.mario.x;
     	float my = levelScene.mario.y;
-    	float minDist = 1000000;
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++) {
-            	isCoin[i][j] = false;
-	        	if(map[i][j] == 34) {
-		        	isCoin[i][j] = true;
-	        	}
-            }
-        }
+    	a = node.sceneSnapshot.level.nearestCoin(mx,my);
+    	float coinX = a[0];
+    	float coinY = a[1];
+    	float minDistance = a[2];
+    	System.out.print("coin: ");
+    	utility.printArray(a);
+    	
     }
     
     // Extract the plan by taking the best node and going back to the root, 
