@@ -109,17 +109,35 @@ public class Level implements Cloneable
     public float[] nearestCoin(float mx, float my) {
     	float[] a = new float[3];
     	if(!hasCoin()) {
-    		System.out.println("coin not found ;-;");
+    		//System.out.println("coin not found ;-;");
     	}
     	float minDistance = 1000000;
     	float coinX = -1;
     	float coinY = -1;
-        for (int i = 0; i < height; i++)
+
+    	int marioBlockX = (int)mx/16;
+    	int marioBlockY = (int)my/16;
+    	System.out.println(marioBlockX);
+    	System.out.println(marioBlockY);
+    	int scopeX = 5;
+    	int scopeY = 5;
+    	int minX = marioBlockX - scopeX;
+    	int maxX = marioBlockX + scopeX;
+    	int minY = marioBlockY - scopeY;
+    	int maxY = marioBlockY + scopeY;
+    	if(minX < 0) minX = 0;
+    	if(minX > width) maxX = width;
+    	if(minY < 0) minX = 0;
+    	if(minY > height) minX = height;
+    	
+    	
+        for (int i = minY; i < maxY; i++)
         {
-            for (int j = 0; j < width; j++) {
+            for (int j = minX; j < maxX; j++) {
             	
-            	if(j == (int)mx/16 && i == (int)my/16){
+            	if(j == marioBlockX && i == marioBlockY){
                 	System.out.print("M");
+                	
             	}
             	else{
             		System.out.print(getBlock(j,i));
@@ -130,7 +148,8 @@ public class Level implements Cloneable
 	        	if(getBlock(i,j)==34) {
 	        		//System.out.println("foundFOUNDfoundFOUNDfoundFOUNDfoundFOUNDfoundFOUNDfoundFOUNDfoundFOUND");
 	        		//float d = utility.calculateDistance((float) mx,(float) i*16,(float) my,(float) j*16);
-	        		float d = utility.calculateDistanceFromCenter(j,i);
+	        		//float d = utility.calculateDistanceFromCenter(j,i);
+	        		float d = utility.calculateDistance(marioBlockX, marioBlockY, j, i);
 	        		if (d < minDistance) {
 	        			minDistance = d;
 	        			coinX = (float) j;
