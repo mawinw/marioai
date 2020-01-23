@@ -77,6 +77,7 @@ public class AStarSimulatorC
 		public float calcRemainingTime(float marioX, float marioXA) //mawinw: node v -> goal calculated from euclidean distance from node v to nearest coin node
 																	//mawinw: levelscene mario x,y between two
 		{
+			
 		    float maxMarioSpeed = 10.9090909f;
 
 			return (100000 - (maxForwardMovement(marioXA, 1000) + marioX)) 
@@ -288,7 +289,7 @@ public class AStarSimulatorC
     	int maxLeft = -100;					// mawinw:distance to plan to the left
 
     	//mawinw: calculate nearest coin
-    	calculateNearestCoin(current);
+    	float d = calculateNearestCoin(current);
     	
     	// Search until we've reached the right side of the screen, or if the time is up.
     	// mawinw: Search to the left to collect the coin
@@ -400,7 +401,8 @@ public class AStarSimulatorC
     	
     	
     }
-    private void calculateNearestCoin(SearchNode node) {
+    //mawinw: return the nearest coin distance >> use as fitness
+    private float calculateNearestCoin(SearchNode node) {
     	//
     	float[] a = new float[3];
     	float mx = levelScene.mario.x;
@@ -413,6 +415,13 @@ public class AStarSimulatorC
     	System.out.print("coin: ");
     	utility.printArray(a);
     	
+		//private int timeElapsed = 0;			// How much ticks elapsed since start of search
+		//public float remainingTimeEstimated = 0; // Optimal (estimated) time to reach goal
+		//private float remainingTime = 0;		// Optimal time to reach goal AFTER simulating with the selected action
+    	System.out.println(node.timeElapsed);
+    	System.out.println(node.remainingTimeEstimated);
+    	System.out.println(node.remainingTime);
+    	return minDistance;
     }
     
     // Extract the plan by taking the best node and going back to the root, 
