@@ -405,6 +405,7 @@ public class AStarSimulatorC
     	float[] a = new float[3];
     	float mx = levelScene.mario.x;
     	float my = levelScene.mario.y;
+    	
     	a = node.sceneSnapshot.level.nearestCoin(mx,my);
     	float coinX = a[0];
     	float coinY = a[1];

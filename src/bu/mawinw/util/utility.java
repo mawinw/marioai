@@ -15,7 +15,7 @@ public class utility {
 				   String blockString = java.lang.Integer.toString(block);
 				   
 				   if((i==10 && j==10)||(i==11 && j==10)) {
-					   blockString = "["+blockString+"]";
+					   blockString = "["+"M"+"]";
 					   int length =  blockString.length();
 					   if(block == 0) {
 						   blockString = " "+blockString+" ";
@@ -50,5 +50,8 @@ public class utility {
 	
 	public static float calculateDistance(float x1, float y1, float x2, float y2) {
 		return (float) Math.sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
+	}
+	public static float calculateDistanceFromCenter(float coinX, float coinY) {
+		return (float) Math.sqrt((coinX-11)*(coinX-11)+(coinY-11)*(coinY-11));
 	}
 }

@@ -81,12 +81,13 @@ public class Level implements Cloneable
         	isGap[i] = false;
         	gapHeight[i] = 15;
         }
+        //mawinw: 
         isCoin = new boolean[width][height];
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++) {
             	isCoin[i][j] = false;
-	        	if(map[i][j] == 34) {
+	        	if(map[i][j] == 34) { //might not work maybe level.getBlock?
 		        	isCoin[i][j] = true;
 	        	}
             }
@@ -99,7 +100,7 @@ public class Level implements Cloneable
         for (int i = 0; i < width; i++)
         {
             for (int j = 0; j < height; j++) {
-	        	if(isCoin[i][j])
+	        	if(getBlock(i,j)==34)
 	        		return true;
         	}
         }
@@ -108,27 +109,36 @@ public class Level implements Cloneable
     public float[] nearestCoin(float mx, float my) {
     	float[] a = new float[3];
     	if(!hasCoin()) {
-    		a[0] = (float) 19.99;
-    		a[1] = (float) 11.11;
-    		a[2] = (float) 22.22;
-    		return a;
+    		System.out.println("coin not found ;-;");
     	}
     	float minDistance = 1000000;
-    	float coinX = 0;
-    	float coinY = 0;
-        for (int i = 0; i < width; i++)
+    	float coinX = -1;
+    	float coinY = -1;
+        for (int i = 0; i < height; i++)
         {
-            for (int j = 0; j < height; j++) {
-	        	if(isCoin[i][j]) {
-	        		
-	        		float d = utility.calculateDistance((float) mx,(float) i*16,(float) my,(float) j*16);
+            for (int j = 0; j < width; j++) {
+            	
+            	if(j == (int)mx/16 && i == (int)my/16){
+                	System.out.print("M");
+            	}
+            	else{
+            		System.out.print(getBlock(j,i));
+            	}
+            	
+            	System.out.print(" ");
+            	
+	        	if(getBlock(i,j)==34) {
+	        		//System.out.println("foundFOUNDfoundFOUNDfoundFOUNDfoundFOUNDfoundFOUNDfoundFOUNDfoundFOUND");
+	        		//float d = utility.calculateDistance((float) mx,(float) i*16,(float) my,(float) j*16);
+	        		float d = utility.calculateDistanceFromCenter(j,i);
 	        		if (d < minDistance) {
 	        			minDistance = d;
-	        			coinX = (float) i*16;
-	        			coinY = (float) j*16;
+	        			coinX = (float) j;
+	        			coinY = (float) i;
 	        		}
 	        	}
             }
+            System.out.println(" ");
         }
 
 		a[0] = coinX;
