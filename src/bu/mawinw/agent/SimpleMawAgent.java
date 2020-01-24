@@ -52,8 +52,8 @@ public class SimpleMawAgent implements Agent
     	if (sim.levelScene.verbose > 0) System.out.println("Next action! Simulated Mariosize: " + s);
 
     	boolean[] ac = new boolean[Environment.numberOfButtons];
-    	ac[Mario.KEY_RIGHT] = true;
-    	ac[Mario.KEY_SPEED] = true;
+    	ac[Mario.KEY_RIGHT] = false; //mawinw: edit
+    	ac[Mario.KEY_SPEED] = false; //mawinw: original= both true
     	
     	// get the environment and enemies from the Mario API
      	byte[][] scene = observation.getLevelSceneObservationZ(0);
