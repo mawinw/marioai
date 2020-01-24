@@ -54,4 +54,27 @@ public class utility {
 	public static float calculateDistanceFromCenter(float coinX, float coinY) {
 		return (float) Math.sqrt((coinX-11)*(coinX-11)+(coinY-11)*(coinY-11));
 	}
+	public static String padString(String s) {
+		int length = s.length();
+		switch(length) {
+		case 1:
+			return "  "+s+"  ";
+		case 2:
+			return  " "+s+"  ";
+		case 3:
+			return  " "+s+" ";
+		case 4:
+			return   ""+s+" ";
+		case 5:
+			return   ""+s+"";
+			
+		}
+		return s;
+		
+	}
+	public static String padString(byte s) {
+		String bs = java.lang.Integer.toString(s);
+		return padString(bs);
+		
+	}
 }
