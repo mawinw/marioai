@@ -33,6 +33,10 @@ public class utility {
 						   blockString = "  "+blockString+"  ";
 					   }
 					   else {
+						   if (blockString == "34") {
+							   blockString = "COIN";
+						   }
+								   
 						   for(int k = 0; k < 5-length; k++) {
 							   blockString += " ";
 						   }

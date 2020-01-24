@@ -77,11 +77,9 @@ public class AStarSimulatorC
 		public float calcRemainingTime(float marioX, float marioXA) //mawinw: node v -> goal calculated from euclidean distance from node v to nearest coin node
 																	//mawinw: levelscene mario x,y between two
 		{
-			
 		    float maxMarioSpeed = 10.9090909f;
-
-			return (100000 - (maxForwardMovement(marioXA, 1000) + marioX)) 
-				/ maxMarioSpeed - 1000;
+		    
+			return (100000 - (maxForwardMovement(marioXA, 1000) + marioX)) / maxMarioSpeed - 1000;
 		}
 		
 		public float getRemainingTime()
@@ -137,7 +135,11 @@ public class AStarSimulatorC
 	    	// penalising it if we've been hurt.
 	    	remainingTime = calcRemainingTime(levelScene.mario.x, levelScene.mario.xa)
 	    	 	+ 1*(getMarioDamage() - initialDamage) * (1000000 - 100 * timeElapsed)
-	    	 	+ 5*(getMarioCoin() - initialCoin) * (1000000 - 100 * timeElapsed);
+	    	 	- 1*(getMarioCoin() - initialCoin) * (1000000 - 100 * timeElapsed)
+	    	 	//+ calculateNearestCoin(this)
+	    	 	;
+	    	
+	    	
 	    	
 	    	if (isInVisitedList)
 	    		remainingTime += visitedListPenalty;
@@ -239,6 +241,13 @@ public class AStarSimulatorC
     	ret[1] = currentAccel;
     	return ret;
     }
+    public float estimateMaximumYMovement(SearchNode node, boolean[] action, int ticks)
+    {
+    	float ya = node.sceneSnapshot.mario.ya;
+    	float jumpTime = node.sceneSnapshot.mario.jumpTime;
+    	
+    	return ya*jumpTime;
+    }
     
     // distance covered at maximum acceleration with initialSpeed for ticks timesteps 
     // this is the closed form of the above function, found using Matlab 
@@ -289,7 +298,7 @@ public class AStarSimulatorC
     	int maxLeft = -100;					// mawinw:distance to plan to the left
 
     	//mawinw: calculate nearest coin
-    	float d = calculateNearestCoin(current);
+        float d = calculateNearestCoin(current);
     	
     	// Search until we've reached the right side of the screen, or if the time is up.
     	// mawinw: Search to the left to collect the coin
@@ -308,7 +317,7 @@ public class AStarSimulatorC
     		
     		// Simulate the consequences of the action associated with the chosen node
     		float realRemainingTime = current.simulatePos();
-    		
+
     		// Now act on what we get as remaining time (to some distant goal)
     		
     		if (realRemainingTime < 0)
@@ -405,8 +414,8 @@ public class AStarSimulatorC
     private float calculateNearestCoin(SearchNode node) {
     	//
     	float[] a = new float[3];
-    	float mx = levelScene.mario.x;
-    	float my = levelScene.mario.y;
+    	float mx = node.sceneSnapshot.mario.x;
+    	float my = node.sceneSnapshot.mario.y;
     	
     	a = node.sceneSnapshot.level.nearestCoin(mx,my);
     	float coinX = a[0];
@@ -419,6 +428,10 @@ public class AStarSimulatorC
 		//public float remainingTimeEstimated = 0; // Optimal (estimated) time to reach goal
 		//private float remainingTime = 0;		// Optimal time to reach goal AFTER simulating with the selected action
     	System.out.println(node.timeElapsed);
+    	System.out.println(node.remainingTimeEstimated);
+    	System.out.println(node.remainingTime);
+    	node.remainingTime += minDistance;
+    	node.remainingTimeEstimated += minDistance;
     	System.out.println(node.remainingTimeEstimated);
     	System.out.println(node.remainingTime);
     	return minDistance;
@@ -554,6 +567,7 @@ public class AStarSimulatorC
         
         // How many actions Mario makes for each search step (can be tweaked)
         int stepsPerSearch = 2;
+
         
         ticksBeforeReplanning--;
         if (ticksBeforeReplanning <= 0 || currentActionPlan.size() == 0)

@@ -66,6 +66,7 @@ public class SimpleMawAgent implements Agent
     	if (sim.levelScene.verbose > 2) System.out.println("Simulating using action: " + sim.printAction(action));
         
     	// Advance the simulator to the state of the "real" Mario state
+    	//mawinw: set simulation key and tick it
     	sim.advanceStep(action);   
        		
 		// Handle desynchronisation of mario and the environment.
