@@ -135,8 +135,8 @@ public class AStarSimulatorC
 	    	// set the remaining time after we've simulated the effects of our action,
 	    	// penalising it if we've been hurt.
 	    	remainingTime = calcRemainingTime(levelScene.mario.x, levelScene.mario.xa)
-	    	 	+ 1*(getMarioDamage() - initialDamage) * (1000000 - 100 * timeElapsed)
-	    	 	- 1*(getMarioCoin() - initialCoin) * (1000000 - 100 * timeElapsed)
+	    	 	+ (getMarioDamage() - initialDamage) * (1000000 - 100 * timeElapsed)
+	    	 	//- 1*(getMarioCoin() - initialCoin) * (1000000 - 100 * timeElapsed)
 	    	 	//+ calculateNearestCoin(this)
 	    	 	;
 	    	
@@ -292,7 +292,7 @@ public class AStarSimulatorC
     	int ticks = 0;
     	int maxRight = 176;					// distance to plan to the right //mawinw: former 176
     	
-    	int maxLeft = -100;					// mawinw:distance to plan to the left
+    	int maxLeft = -176;					// mawinw:distance to plan to the left
 
     	//mawinw: calculate nearest coin
         //float d = calculateNearestCoin(current);
@@ -301,7 +301,7 @@ public class AStarSimulatorC
     	// mawinw: Search to the left to collect the coin
     	while(posPool.size() != 0 
     			&& ((bestPosition.sceneSnapshot.mario.x - currentSearchStartingMarioXPos < maxRight) ||
-    				//(bestPosition.sceneSnapshot.mario.x - currentSearchStartingMarioXPos > maxLeft) ||  //mawinw: search the left //still bug
+    			//	(bestPosition.sceneSnapshot.mario.x - currentSearchStartingMarioXPos > maxLeft) ||  //mawinw: search the left //still bug
     				!currentGood) 
     			&& (System.currentTimeMillis() - startTime < 40)) 
     			//&& (System.currentTimeMillis() - startTime < Math.min(200,timeBudget/2))) <- this makes the game a bit more jerky, but allows a deeper search in tough situations
