@@ -40,7 +40,6 @@ public class Level implements Cloneable
     public byte[][] map;
     
     public boolean[] isGap;
-    public boolean[][] isCoin;
     public int[] gapHeight;
     
     public List<int[]> modifiedMapTiles = new ArrayList<int[]>(0);
@@ -81,17 +80,7 @@ public class Level implements Cloneable
         	isGap[i] = false;
         	gapHeight[i] = 15;
         }
-        //mawinw: 
-        isCoin = new boolean[width][height];
-        for (int i = 0; i < width; i++)
-        {
-            for (int j = 0; j < height; j++) {
-            	isCoin[i][j] = false;
-	        	if(map[i][j] == 34) { //might not work maybe level.getBlock?
-		        	isCoin[i][j] = true;
-	        	}
-            }
-        }
+
         //data = new byte[width][height];
         spriteTemplates = new SpriteTemplate[width][height];
         //observation = new byte[width][height];
@@ -115,8 +104,6 @@ public class Level implements Cloneable
 
     	int marioBlockX = (int)mx/16;
     	int marioBlockY = (int)my/16;
-    	System.out.println(marioBlockX);
-    	System.out.println(marioBlockY);
     	int scopeX = 9;
     	int scopeY = 9;
     	int minX = marioBlockX - scopeX;
@@ -128,22 +115,14 @@ public class Level implements Cloneable
     	if(minY < 0) minX = 0;
     	if(minY > height) minX = height;
 
-    	minDistance = utility.calculateDistance(0, 0, (1+scopeX)*16, (1+scopeY)*16);
+    	minDistance = utility.calculateDistance(minX*16, minX*16, maxX*16, maxY*16);
 
-    	if(!hasCoin()) {
-    		System.out.println("coin not found ;-;");
-    		a[0] = coinX;
-    		a[1] = coinY;
-    		a[2] = minDistance;
-        	//return a;
-    	}
         for (int i = minY; i < maxY; i++)
         {
             for (int j = minX; j < maxX; j++) {
             	
             	if(j == marioBlockX && i == marioBlockY){
                 	System.out.print(utility.padString("MARIO"));
-                	
             	}
             	else{
             		if(getBlock(j,i) != 34)
@@ -154,10 +133,7 @@ public class Level implements Cloneable
             	
             	
 	        	if(getBlock(i,j)==34) {
-	        		//System.out.println("foundFOUNDfoundFOUNDfoundFOUNDfoundFOUNDfoundFOUNDfoundFOUNDfoundFOUND");
-	        		//float d = utility.calculateDistance((float) mx,(float) i*16,(float) my,(float) j*16);
-	        		//float d = utility.calculateDistanceFromCenter(j,i);
-	        		float d = utility.calculateDistance(mx*16, my*16, j*16, i*16);
+	        		float d = utility.calculateDistance(mx, my, j*16, i*16);
 	        		if (d < minDistance) {
 	        			minDistance = d;
 	        			coinX = (float) j;
@@ -167,6 +143,12 @@ public class Level implements Cloneable
             }
             System.out.println(" ");
         }
+    	if(coinX == -1 || coinY == -1) {
+    		System.out.println("coin not found ;-;");
+    	}
+    	else {
+    		System.out.println("coin found");
+    	}
 		a[0] = coinX;
 		a[1] = coinY;
 		a[2] = minDistance;

@@ -60,7 +60,8 @@ public class SimpleMawAgent implements Agent
     	float[] enemies = observation.getEnemiesFloatPos();
 		float[] realMarioPos = observation.getMarioFloatPos();
 		utility.printScene(scene);
-		utility.printArray(enemies);
+		//utility.printArray(enemies);
+		System.out.print("Mario Position: ");
 		utility.printArray(realMarioPos);
 		
     	if (sim.levelScene.verbose > 2) System.out.println("Simulating using action: " + sim.printAction(action));

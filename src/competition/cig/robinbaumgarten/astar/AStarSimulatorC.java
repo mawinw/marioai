@@ -78,7 +78,8 @@ public class AStarSimulatorC
 																	//mawinw: levelscene mario x,y between two
 		{
 		    float maxMarioSpeed = 10.9090909f;
-		    
+		    System.out.print("remaining time = ");
+		    System.out.println((100000 - (maxForwardMovement(marioXA, 1000) + marioX)) / maxMarioSpeed - 1000);
 			return (100000 - (maxForwardMovement(marioXA, 1000) + marioX)) / maxMarioSpeed - 1000;
 		}
 		
@@ -279,10 +280,6 @@ public class AStarSimulatorC
     //Mawinw
     private int getMarioCoin() {
     	//coins collected
-    	if (levelScene.level.isCoin[(int) (levelScene.mario.x/16)][(int) (levelScene.mario.y/16)])
-    	{
-     		levelScene.mario.coins++;
-    	}
     	return levelScene.mario.coins;
     }
     
@@ -298,7 +295,7 @@ public class AStarSimulatorC
     	int maxLeft = -100;					// mawinw:distance to plan to the left
 
     	//mawinw: calculate nearest coin
-        float d = calculateNearestCoin(current);
+        //float d = calculateNearestCoin(current);
     	
     	// Search until we've reached the right side of the screen, or if the time is up.
     	// mawinw: Search to the left to collect the coin
@@ -314,6 +311,11 @@ public class AStarSimulatorC
     		// Pick the best node from our open list
     		current = pickBestPos(posPool);
     		currentGood = false;
+
+        	//mawinw: calculate nearest coin
+    		float d;
+    		//if(current != null)
+    		//	calculateNearestCoin(current);//calculating in while loop is buggy idk why
     		
     		// Simulate the consequences of the action associated with the chosen node
     		float realRemainingTime = current.simulatePos();
@@ -414,6 +416,9 @@ public class AStarSimulatorC
     private float calculateNearestCoin(SearchNode node) {
     	//
     	float[] a = new float[3];
+    	if (node.sceneSnapshot.mario.x != 0)
+    		return -1;
+    		
     	float mx = node.sceneSnapshot.mario.x;
     	float my = node.sceneSnapshot.mario.y;
     	
@@ -427,12 +432,17 @@ public class AStarSimulatorC
 		//private int timeElapsed = 0;			// How much ticks elapsed since start of search
 		//public float remainingTimeEstimated = 0; // Optimal (estimated) time to reach goal
 		//private float remainingTime = 0;		// Optimal time to reach goal AFTER simulating with the selected action
+    	System.out.print("timeElapsed: ");
     	System.out.println(node.timeElapsed);
+    	System.out.print("remainingTimeEstimated: ");
     	System.out.println(node.remainingTimeEstimated);
+    	System.out.print("remainingTime: ");
     	System.out.println(node.remainingTime);
     	node.remainingTime += minDistance;
     	node.remainingTimeEstimated += minDistance;
+    	System.out.print("remainingTimeEstimated NEW: ");
     	System.out.println(node.remainingTimeEstimated);
+    	System.out.print("remainingTime NEW: ");
     	System.out.println(node.remainingTime);
     	return minDistance;
     }

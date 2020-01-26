@@ -15,38 +15,17 @@ public class utility {
 				   String blockString = java.lang.Integer.toString(block);
 				   
 				   if((i==10 && j==10)||(i==11 && j==10)) {
-					   blockString = "["+"M"+"]";
-					   int length =  blockString.length();
-					   if(block == 0) {
-						   blockString = " "+blockString+" ";
-					   }					   
-					   else {
-
-						   for(int k = 0; k < 5-length; k++) {
-							   blockString += " ";
-						   }
-					   }
+					   blockString = "[M]";
 				   }
-				   else {
-					   int length =  blockString.length();
-					   if(block == 0) {
-						   blockString = "  "+blockString+"  ";
-					   }
-					   else {
-						   if (blockString == "34") {
-							   blockString = "COIN";
-						   }
-								   
-						   for(int k = 0; k < 5-length; k++) {
-							   blockString += " ";
-						   }
-					   }
+				   else if (blockString == "34") {
+					   blockString = "[C]";
 				   }
-				   System.out.print(blockString);
+				   System.out.print(padString(blockString));
 			   }
 			   System.out.println("");
+	   
 		   }
-	}
+   }
 	public static void printArray(float[] array)
 	{
 			System.out.println(Arrays.toString(array));
