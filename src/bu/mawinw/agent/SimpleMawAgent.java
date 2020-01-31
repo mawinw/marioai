@@ -44,6 +44,8 @@ public class SimpleMawAgent implements Agent
     	
     	// everything with "verbose" in it is debug output. 
     	// Set Levelscene.verbose to a value greater than 0 to enable some debug output.
+    	System.out.println("-----------------------------------------------------------------------------------------------"
+    			+ "-----------------------");
     	String s = "Fire";
     	if (!sim.levelScene.mario.fire)
     		s = "Large";
