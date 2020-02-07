@@ -55,7 +55,8 @@ public class SimpleMawAgent implements Agent
 
     	boolean[] ac = new boolean[Environment.numberOfButtons];
     	ac[Mario.KEY_RIGHT] = false; //mawinw: edit
-    	ac[Mario.KEY_SPEED] = false; //mawinw: original= both true
+    	ac[Mario.KEY_SPEED] = true; //mawinw: original= both true
+    	ac[Mario.KEY_LEFT] = true; 
     	
     	// get the environment and enemies from the Mario API
      	byte[][] scene = observation.getLevelSceneObservationZ(0);

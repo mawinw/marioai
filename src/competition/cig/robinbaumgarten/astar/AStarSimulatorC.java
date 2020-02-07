@@ -319,9 +319,16 @@ public class AStarSimulatorC
     	int maxLeft = -10;					// mawinw:distance to plan to the left
 
     	//mawinw: calculate nearest coin
-        float[] d = calculateNearestCoin(current);
+        float[] d = calculateNearestCoin(current); //mawinw: calculate at current, best position
     	lastCoinX = d[0];
     	lastCoinY = d[1];
+    	float distThreshold = d[2];
+    	System.out.print("dist threshold:");
+    	System.out.println(distThreshold);
+    	if(lastCoinX == -1 && lastCoinY == -1) {
+    		distThreshold = 0.1f;
+    	}
+    	
     	
     	// Search until we've reached the right side of the screen, or if the time is up.
     	// mawinw: Search to the left to collect the coin
@@ -329,26 +336,34 @@ public class AStarSimulatorC
     			&& ((bestPosition.sceneSnapshot.mario.x - currentSearchStartingMarioXPos < maxRight) ||
     			//	(bestPosition.sceneSnapshot.mario.x - currentSearchStartingMarioXPos > maxLeft) ||  //mawinw: search the left //still bug array out of bound
     				!currentGood) 
-    			&& (System.currentTimeMillis() - startTime < 40)) 
+    			&& (System.currentTimeMillis() - startTime < 20)) //mawinw: stop this feature for debugging for now
     			//&& (System.currentTimeMillis() - startTime < Math.min(200,timeBudget/2))) <- this makes the game a bit more jerky, but allows a deeper search in tough situations
     	{
     		ticks++;
     		
     		// Pick the best node from our open list
     		current = pickBestPos(posPool);
+    		System.out.println("pick the best pos!");
+    		
     		currentGood = false;
 
-        	//mawinw: calculate nearest coin
-    		//float d;
-    		if(current != null) {
-    			d = calculateNearestCoin(current);//calculating in while loop is buggy idk why
-    			if(lastCoinX != -1) {
-    	        	lastCoinX = d[0];
-    	        	lastCoinY = d[1];
-    			}
-    		}
+
     		// Simulate the consequences of the action associated with the chosen node
     		float realRemainingTime = current.simulatePos();
+    		
+
+        	//mawinw: calculate nearest coin
+    		//mawinw: try calculating after simulating position
+			float xx = current.sceneSnapshot.mario.x;
+			float yy = current.sceneSnapshot.mario.y;
+			System.out.println(xx);
+			System.out.println(yy);
+
+			d = calculateNearestCoin(current);//calculating in while loop is buggy idk why
+			if(lastCoinX != -1) {
+	        	lastCoinX = d[0];
+	        	lastCoinY = d[1];
+			}
     		if(lastCoinX != -1) {
     			float dist = utility.calculateDistance(lastCoinX, lastCoinY,current.sceneSnapshot.mario.x,current.sceneSnapshot.mario.y);
     			System.out.print("dist :");
@@ -356,12 +371,24 @@ public class AStarSimulatorC
     			realRemainingTime += dist;
     			System.out.print("last remaining time");
     			System.out.println(realRemainingTime);
+    			if(distThreshold - dist >20) {
+    				System.out.print("dist threshold - dist > 20 make current node good");
+    				System.out.print("dist threshold:");
+    				System.out.print(distThreshold);
+    				System.out.print("dist:");
+    				System.out.print(dist);
+    				System.out.print("difference:");
+    				System.out.println(distThreshold - dist);
+    				
+    				currentGood = true;
+    			}
     		}
     		// Now act on what we get as remaining time (to some distant goal)
     		
     		if (realRemainingTime < 0)
     		{
     			// kick out negative remaining time (shouldnt happen)
+    			System.out.println("kicked node out!");
     			continue;
     		}
     		else if  (!current.isInVisitedList 
@@ -371,7 +398,7 @@ public class AStarSimulatorC
     			// (i.e., has been explored before), put some penalty on it and put it 
     			// back into the pool. The closed list works approximately: nodes too close
     			// to an item in the closed list are considered visited, even though they're a bit different.
-    			
+    			System.out.println("the node is in visited position, add penalty");
     			realRemainingTime += visitedListPenalty;
     			current.isInVisitedList = true;
     			current.remainingTime = realRemainingTime;
@@ -379,8 +406,16 @@ public class AStarSimulatorC
 	   			
     			posPool.add(current); 
 	   		}
-    		else if (realRemainingTime - current.remainingTimeEstimated > 300.1) //mawinw: former 0.1 +around 300 bc coin penalty
+    		else if (realRemainingTime - current.remainingTimeEstimated >= distThreshold) //mawinw: former 0.1 +around 300 bc coin penalty
     		{
+    			System.out.print("real remaining time:");
+    			System.out.print(realRemainingTime);
+    			System.out.print(" current remaining time estimated:");
+    			System.out.print(current.remainingTimeEstimated);
+    			System.out.print("difference is more than ");
+    			System.out.print(distThreshold);
+    			System.out.print(" the node is not good as anticipated: ");
+    			System.out.println(realRemainingTime - current.remainingTimeEstimated);
     			// current node is not as good as anticipated. put it back in pool and look for best again
     			current.remainingTimeEstimated = realRemainingTime;
     			posPool.add(current);
@@ -388,13 +423,24 @@ public class AStarSimulatorC
     		else
     		{
     			// accept the node, its estimated time is as good as its real time.
-    			currentGood = true;
+    			//currentGood = false;
+    			//System.out.println("current is good!!?");
+    			System.out.print("real remaining time:");
+    			System.out.print(realRemainingTime);
+    			System.out.print(" current remaining time estimated:");
+    			System.out.print(current.remainingTimeEstimated);
+    			System.out.print("difference is less than 300.1: ");
+    			System.out.println(realRemainingTime - current.remainingTimeEstimated);
     			
     			// put it into the visited list
     			visited((int) current.sceneSnapshot.mario.x, (int) current.sceneSnapshot.mario.y, current.timeElapsed);
-    			
+    			System.out.println((int) current.sceneSnapshot.mario.x);
+    			System.out.println((int) current.sceneSnapshot.mario.y);
+    			System.out.println(current.timeElapsed);
     			// put all children into the open list
     			posPool.addAll(current.generateChildren());    			
+    			System.out.println("this node get to generate children!");
+    			
     		}
     		if (currentGood) 
     		{
@@ -426,7 +472,7 @@ public class AStarSimulatorC
     // initialise the planner
     private void startSearch(int repetitions)
     {    	
-    	if (levelScene.verbose > 1) System.out.println("Started search.");
+    	if (levelScene.verbose > 1) System.out.println("Started search..................");
     	SearchNode startPos = new SearchNode(null, repetitions, null);
     	startPos.sceneSnapshot = backupState();
     	
@@ -434,7 +480,7 @@ public class AStarSimulatorC
     	visitedStates.clear();
     	posPool.addAll(startPos.generateChildren());
     	currentSearchStartingMarioXPos = levelScene.mario.x; 
-   	
+    	
     	/*
 		for(int i = 0; i < 1000; i++)
 		{
@@ -445,7 +491,6 @@ public class AStarSimulatorC
     	*/
     	bestPosition = startPos;
     	furthestPosition = startPos;
-    	nearestCoinPosition = startPos;
     	
     	
     }
@@ -456,18 +501,21 @@ public class AStarSimulatorC
     	a[1] = -1;
     	a[2] = 100000;
     	try {
+		System.out.println("start calculate nearest coin");
     	float mx = node.sceneSnapshot.mario.x;
     	float my = node.sceneSnapshot.mario.y;
+
+		System.out.print("Simul Position: [");
+    	System.out.print(mx);
+    	System.out.print(", ");
+    	System.out.print(my);
+    	System.out.println("]");
     	
     	a = node.sceneSnapshot.level.nearestCoin(mx,my);
-    	float coinX = a[0];
-    	float coinY = a[1];
-    	float minDistance = a[2];
     	System.out.print("coin: ");
     	utility.printArray(a);
 
     	return a;
-    	//return a;
     	}
     	catch (Exception e) {
     		System.out.println("unable to search coins in the node, node information is null");
@@ -504,6 +552,7 @@ public class AStarSimulatorC
     		if (levelScene.verbose > 1) System.out.println("NO BESTPOS!");
     		for (int i = 0; i < 10; i++)
     		{
+    			System.out.println("extract basic plan!");
     			actions.add(createAction(false, true, false, false, true));  //rs      		
     		}
     		return actions;
@@ -582,6 +631,7 @@ public class AStarSimulatorC
 		try
 		{
 			sceneCopy = (LevelScene) levelScene.clone();
+			System.out.println("return levelScene.clone()");
 		} catch (CloneNotSupportedException e)
 		{
 			e.printStackTrace();
@@ -595,21 +645,24 @@ public class AStarSimulatorC
 	public void restoreState(LevelScene l)
 	{
 		levelScene = l;
+		System.out.println("levelScene = l!");
 	}
 	
 	public void advanceStep(boolean[] action)
 	{
 		levelScene.mario.setKeys(action);
+		System.out.print("tick levelScene with action:");
 		if (levelScene.verbose > 8) System.out.print("[" 
 				+ (action[Mario.KEY_DOWN] ? "d" : "") 
 				+ (action[Mario.KEY_RIGHT] ? "r" : "")
 				+ (action[Mario.KEY_LEFT] ? "l" : "")
 				+ (action[Mario.KEY_JUMP] ? "j" : "")
-				+ (action[Mario.KEY_SPEED] ? "s" : "") + "]");
+				+ (action[Mario.KEY_SPEED] ? "s" : "") + "]\n");
 		levelScene.tick();
 	}
 
 	// main optimisation function, this calls the A* planner and extracts and returns the optimal action.
+	// mawinw: after calling to return action
 	public boolean[] optimise()
 	{
 		long startTime = System.currentTimeMillis();
