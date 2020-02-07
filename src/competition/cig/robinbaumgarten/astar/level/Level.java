@@ -125,14 +125,18 @@ public class Level implements Cloneable
                 	System.out.print(utility.padString("MARIO"));
             	}
             	else{
-            		if(getBlock(j,i) != 34 && getBlock(j,i) != 14)
+            		if(getBlock(j,i) != 34 
+            		&& getBlock(j,i) != 14
+            		)
             		System.out.print(utility.padString(getBlock(j,i)));
             		else
                     System.out.print(utility.padString("COIN"));
             	}
             	
             	
-	        	if(getBlock(i,j)==34 || getBlock(j,i) == 14) {
+	        	if(getBlock(i,j)==34 
+	        	|| getBlock(j,i) == 14
+	        	) {
 	        		float d = utility.calculateDistance(mx, my, j*16, i*16);
 	        		if (d < minDistance) {
 	        			minDistance = d;
