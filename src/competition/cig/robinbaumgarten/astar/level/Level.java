@@ -121,34 +121,32 @@ public class Level implements Cloneable
         {
             for (int j = minX; j < maxX; j++) {
             	
-            	if(j == marioBlockX && i == marioBlockY){
+            	if((j == marioBlockX && i == marioBlockY) || (j == marioBlockX && i == marioBlockY-1))
                 	System.out.print(utility.padString("MARIO"));
-            	}
             	else{
-            		if(getBlock(j,i) != 34 
-            		&& getBlock(j,i) != 14
+            		if(getBlock(j,i) != 34
             		)
             		System.out.print(utility.padString(getBlock(j,i)));
-            		else
-                    System.out.print(utility.padString("COIN"));
-            	}
-            	
-            	
-	        	if(getBlock(i,j)==34 
-	        	|| getBlock(j,i) == 14
-	        	) {
-	        		float d = utility.calculateDistance(mx, my, j*16, i*16);
+            		else {
+                		//System.out.print(utility.padString("CN34"));
+                		System.out.print("CN34");
+            		float d = utility.calculateDistance(mx, my, j*16, i*16);
 	        		if (d < minDistance) {
 	        			minDistance = d;
 	        			coinX = (float) j;
 	        			coinY = (float) i;
+	            		System.out.print("T");
+	        			
 	        		}
-	        	}
+            	}
+            }
             }
             System.out.println(" ");
         }
     	if(coinX == -1 || coinY == -1) {
-    		System.out.println("coin not found ;-;");
+    		System.out.println("coin not found ;-;, make max x to be coin");
+			coinX = (float) marioBlockX + scopeX;
+			coinY = (float) marioBlockY;
     	}
     	else {
     		System.out.println("coin found");

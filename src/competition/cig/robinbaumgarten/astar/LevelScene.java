@@ -144,9 +144,32 @@ public class LevelScene implements SpriteContext, Cloneable
                 			gapBorderHeight = y;
                 		gapAtLast = false;
                 	}
-                	
-                    if (datum != 1 && level.getBlock(x, y) != 14) 
+                	/*
+                    if(level.getBlock(x, y) == 14 || datum == 14 ||level.getBlock(x, y) == 34 || datum == 34) {
+                    	System.out.println("before");
+                    	System.out.println("observation x:"+x+" y:"+y+" get blk: "+level.getBlock(x, y)+" observe:" +datum);
+                    }
+                    */
+                    if (datum != 1 
+                    		&& level.getBlock(x, y) != 14
+                    		) {
                     	level.setBlock(x, y, datum);
+                    }
+                    if(level.getBlock(x, y) == 14 || datum == 14 ||level.getBlock(x, y) == 34 || datum == 34) {
+                    	//System.out.println("after");
+                    	//System.out.println("observation x:"+x+" y:"+y+" get blk: "+level.getBlock(x, y)+" observe:" +datum);
+                        if(datum == 34) {
+                        	//System.out.println("datum = 34");
+                        	level.setBlock(x, y, datum);
+                        	//System.out.println("position x:"+x+" y:"+y+" get blk: "+level.getBlock(x, y)+" observe:" +datum);
+                        }
+                        if(datum == 0) {
+                        	//System.out.println("datum = 0");
+                        	level.setBlock(x, y, datum);
+                        	//System.out.println("position x:"+x+" y:"+y+" get blk: "+level.getBlock(x, y)+" observe:" +datum);
+                        }
+                    }
+                    
                 }
             }
         }

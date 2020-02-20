@@ -55,6 +55,9 @@ public class AStarSimulatorC
 		public LevelScene sceneSnapshot = null; // World state of this node
 		public boolean hasBeenHurt = false;
 		public boolean isInVisitedList = false;
+
+		public float nearestCoinX = -1;
+		public float nearestCoinY = -1;
 		
 		boolean[] action;						// the action of this node
 		int repetitions;
@@ -156,12 +159,14 @@ public class AStarSimulatorC
 	    	}
 	    	// set the remaining time after we've simulated the effects of our action,
 	    	// penalising it if we've been hurt.
-	    	
+	    	System.out.println("remaining time after simulation: ");
+	    	System.out.println( calcRemainingTime(levelScene.mario.x, levelScene.mario.xa));
 	    	remainingTime = calcRemainingTime(levelScene.mario.x, levelScene.mario.xa)
-	    	 	+ (getMarioDamage() - initialDamage) * (1000000 - 100 * timeElapsed)
+	    	 	+ (getMarioDamage() - initialDamage) * (1000 - 100 * timeElapsed)
 	    	 	//- 1*(getMarioCoin() - initialCoin) * (1000000 - 100 * timeElapsed)
 	    	 	//+ calculateNearestCoin(this)[2]
 	    	 	;
+	    	System.out.println(remainingTime);
 	    	
 	    	
 	    	
@@ -170,7 +175,8 @@ public class AStarSimulatorC
 	    	hasBeenHurt = (getMarioDamage() - initialDamage) != 0;
 	    	
 	    	sceneSnapshot = backupState();
-	    			
+
+	    	System.out.println(remainingTime);
 	    	return remainingTime;			
 		}
 		
@@ -355,10 +361,14 @@ public class AStarSimulatorC
 
     		// Simulate the consequences of the action associated with the chosen node
     		float realRemainingTime = current.simulatePos();
+    		System.out.println("real remaining time after simulate pos");
+    		System.out.println(realRemainingTime);
     		
 
         	//mawinw: calculate nearest coin
 			d = calculateNearestCoin(current); //mawinw: search in current node
+	    	lastCoinX = d[0];
+	    	lastCoinY = d[1];
 			if(lastCoinX > -1) { //mawinw: coin found, update lastest coin position
 	        	lastCoinX = d[0];
 	        	lastCoinY = d[1];
@@ -367,10 +377,12 @@ public class AStarSimulatorC
     			System.out.print("dist :");
     			System.out.println(dist);
     			//mawinw: add last coin distance
+    			System.out.print("before remaining time");
+    			System.out.println(realRemainingTime);
     			realRemainingTime += dist;
     			System.out.print("last remaining time");
     			System.out.println(realRemainingTime);
-    			if(distThreshold - dist >20) {
+    			if(distThreshold - dist >10) {
     				System.out.println("-----dist threshold - dist > 20 make current node GOOD-----");
     				System.out.print("dist threshold:");
     				System.out.print(distThreshold);
@@ -380,6 +392,7 @@ public class AStarSimulatorC
     				System.out.println(distThreshold - dist);
     				
     				currentGood = true;
+    				bestPosition = current;
     			}
 			}
     		// Now act on what we get as remaining time (to some distant goal)
@@ -727,8 +740,10 @@ public class AStarSimulatorC
 		boolean[] action = new boolean[5];
         if (currentActionPlan.size() > 0)
         	action = currentActionPlan.remove(0);
-        else
+        else {
         	System.out.println("action plan size is ZERO ;-;!?");
+        	action = createAction(false, true, false, false, false);
+        }
         
 		long e = System.currentTimeMillis();
 		if (levelScene.verbose > 0) System.out.println("Simulation took "+(e-startTime)+"ms.");
