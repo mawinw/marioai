@@ -128,16 +128,16 @@ public class Level implements Cloneable
             		)
             		System.out.print(utility.padString(getBlock(j,i)));
             		else {
-                		//System.out.print(utility.padString("CN34"));
-                		System.out.print("CN34");
             		float d = utility.calculateDistance(mx, my, j*16, i*16);
 	        		if (d < minDistance) {
 	        			minDistance = d;
 	        			coinX = (float) j;
 	        			coinY = (float) i;
-	            		System.out.print("T");
+	                	System.out.print(utility.padString("CN34T"));
 	        			
 	        		}
+	        		else
+	                	System.out.print(utility.padString("CN34"));
             	}
             }
             }

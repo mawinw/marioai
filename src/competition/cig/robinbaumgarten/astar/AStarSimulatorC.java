@@ -166,7 +166,7 @@ public class AStarSimulatorC
 	    	 	//- 1*(getMarioCoin() - initialCoin) * (1000000 - 100 * timeElapsed)
 	    	 	//+ calculateNearestCoin(this)[2]
 	    	 	;
-	    	System.out.println(remainingTime);
+	    	//System.out.println(remainingTime);
 	    	
 	    	
 	    	
@@ -176,7 +176,7 @@ public class AStarSimulatorC
 	    	
 	    	sceneSnapshot = backupState();
 
-	    	System.out.println(remainingTime);
+	    	//System.out.println(remainingTime);
 	    	return remainingTime;			
 		}
 		
@@ -340,6 +340,7 @@ public class AStarSimulatorC
     		System.out.println("the coin is not on original screen");
     	}
     	
+    	float bestDistanceToCoin = 0.1f;
     	
     	// Search until we've reached the right side of the screen, or if the time is up.
     	// mawinw: Search to the left to collect the coin
@@ -382,13 +383,13 @@ public class AStarSimulatorC
     			realRemainingTime += dist;
     			System.out.print("last remaining time");
     			System.out.println(realRemainingTime);
-    			if(distThreshold - dist >10) {
-    				System.out.println("-----dist threshold - dist > 20 make current node GOOD-----");
+    			if(distThreshold - dist > bestDistanceToCoin ) {
+    				System.out.println("-----dist threshold - dist > "+bestDistanceToCoin+" make current node GOOD-----");
     				System.out.print("dist threshold:");
     				System.out.print(distThreshold);
     				System.out.print("dist:");
     				System.out.print(dist);
-    				System.out.print("difference:");
+    				System.out.print("bestDistanceToCoin:");
     				System.out.println(distThreshold - dist);
     				
     				currentGood = true;
@@ -581,7 +582,16 @@ public class AStarSimulatorC
     		for (int i = 0; i < 10; i++)
     		{
     			System.out.println("extract basic plan!");
-    			actions.add(createAction(false, true, false, false, true));  //rs      		
+    			actions.add(createAction(false, true, false, false, true));  //rs     
+    			
+    			/*
+    			actions.add(createAction(true, false, false, false, true));	 //ls
+    	    	
+    			actions.add(createAction(false, true, false, false, true));										  //r
+    	    	
+    			actions.add(createAction(true, false, false, false, false));									  //l
+    			*/
+    	    	
     		}
     		return actions;
     	}
@@ -716,7 +726,7 @@ public class AStarSimulatorC
         	if (currentActionPlan.size() < planAhead)
         	{
         		if (levelScene.verbose > 2) System.out.println("Warning!! currentActionPlan smaller than planAhead! plansize: "+currentActionPlan.size());
-
+        		//bestPosition = null;
             	currentActionPlan = extractPlan(); 
         		planAhead = currentActionPlan.size();
         	}
@@ -742,7 +752,7 @@ public class AStarSimulatorC
         	action = currentActionPlan.remove(0);
         else {
         	System.out.println("action plan size is ZERO ;-;!?");
-        	action = createAction(false, true, false, false, false);
+        	//action = createAction(false, true, false, false, true); //rs
         }
         
 		long e = System.currentTimeMillis();
