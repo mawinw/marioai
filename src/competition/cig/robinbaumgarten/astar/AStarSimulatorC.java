@@ -58,6 +58,8 @@ public class AStarSimulatorC
 
 		public float nearestCoinX = -1;
 		public float nearestCoinY = -1;
+		public float distThreshold = 10000;
+		public float bestDistanceToCoin = 0;
 		
 		boolean[] action;						// the action of this node
 		int repetitions;
@@ -365,14 +367,35 @@ public class AStarSimulatorC
     		System.out.println("real remaining time after simulate pos");
     		System.out.println(realRemainingTime);
     		
-
+    		//mawinw: detect coin collision
+    		//mawinw: if Mario is in the same block as the parent's coin ... then what?
+    		/*
+    		float mx = current.sceneSnapshot.mario.x;
+    		float my = current.sceneSnapshot.mario.x;
+    		float parentCoinX = current.parentPos.nearestCoinX;
+    		float parentCoinY = current.parentPos.nearestCoinY;
+    		boolean coinCollision = utility.detectCoinCollision(mx, my, parentCoinX, parentCoinY, true);
+    		if (coinCollision) {
+				currentGood = true;
+				bestPosition = current;
+				System.out.println("------------COIN COLLISION------------");
+    		}
+    		*/
+    		
         	//mawinw: calculate nearest coin
 			d = calculateNearestCoin(current); //mawinw: search in current node
 	    	lastCoinX = d[0];
 	    	lastCoinY = d[1];
+	    	if(current.nearestCoinX!= lastCoinX || current.nearestCoinY!= lastCoinY ) {
+	    		//mawinw: new coin detected. case1: coin is collected. case2: mario is nearer at new coin
+	    		
+	    	}
 			if(lastCoinX > -1) { //mawinw: coin found, update lastest coin position
 	        	lastCoinX = d[0];
 	        	lastCoinY = d[1];
+	        	current.nearestCoinX = lastCoinX;
+	        	current.nearestCoinY = lastCoinY;
+	        	
 	        	//mawinw: calculate new distance after some ticks and compare to original distance
     			float dist = utility.calculateDistance(lastCoinX, lastCoinY,current.sceneSnapshot.mario.x,current.sceneSnapshot.mario.y);
     			System.out.print("dist :");
@@ -715,6 +738,7 @@ public class AStarSimulatorC
         
         // How many actions Mario makes for each search step (can be tweaked)
         int stepsPerSearch = 2;
+        
 
         
         ticksBeforeReplanning--;
@@ -752,7 +776,7 @@ public class AStarSimulatorC
         	action = currentActionPlan.remove(0);
         else {
         	System.out.println("action plan size is ZERO ;-;!?");
-        	//action = createAction(false, true, false, false, true); //rs
+        	action = createAction(false, true, false, false, true); //rs
         }
         
 		long e = System.currentTimeMillis();

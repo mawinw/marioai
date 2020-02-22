@@ -37,6 +37,25 @@ public class utility {
 	public static float calculateDistanceFromCenter(float coinX, float coinY) {
 		return (float) Math.sqrt((coinX-11)*(coinX-11)+(coinY-11)*(coinY-11));
 	}
+	
+	public static boolean detectCoinCollision(float mx, float my, float coinX, float coinY, boolean bigMario) {
+		float marioSizeX = 16;
+		float marioSizeY = bigMario ? 32:16;
+		float coinSizeX = 32;
+		float coinSizeY = 32;
+		float mx1 = mx;
+		float mx2 = mx + marioSizeX;
+		float cx1 = coinX;
+		float cx2 = coinX + coinSizeX;
+		float my1 = my;
+		float my2 = my + marioSizeY;
+		float cy1 = coinY;
+		float cy2 = coinY + coinSizeY;
+		if ((mx2 < cx1) || (cx2 < mx1) || (my2 < cy1) || (cy2 < my1)) {
+			return false;
+		}
+		return true;
+	}
 	public static String padString(String s) {
 		int length = s.length();
 		switch(length) {
@@ -55,6 +74,7 @@ public class utility {
 		return s;
 		
 	}
+	
 	public static String padString(byte s) {
 		String bs = java.lang.Integer.toString(s);
 		return padString(bs);

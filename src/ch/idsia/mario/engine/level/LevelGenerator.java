@@ -337,8 +337,8 @@ public class LevelGenerator
     	ArrayList<Integer> coinY = new ArrayList<Integer>((Arrays.asList( 5,  5,  5,  5,  5,  5,  5 )));
     	ArrayList<Integer> block = new ArrayList<Integer>((Arrays.asList(23, 23, 23, 22, 23, 22, 23 )));
     	for(int i = 0; i<coinX.size(); i++) {
-    			//setBlocks(coinX.get(i),15-coinY.get(i), block.get(i)); //edited block
-			addCoin(coinX.get(i),15-coinY.get(i));
+    			setBlocks(coinX.get(i),15-coinY.get(i), block.get(i)); //edited block
+			//addCoin(coinX.get(i),15-coinY.get(i));
     	}
     	coinX = new ArrayList<Integer>((Arrays.asList(165,170)));
     	coinY = new ArrayList<Integer>((Arrays.asList(  8,  9)));
@@ -350,15 +350,15 @@ public class LevelGenerator
     	coinY = new ArrayList<Integer>((Arrays.asList(9,   9)));
     	block = new ArrayList<Integer>((Arrays.asList(23,  23 )));
     	for(int i = 0; i<coinX.size(); i++) {
-			//setBlocks(coinX.get(i),15-coinY.get(i), block.get(i)); //edited block
-			addCoin(coinX.get(i),15-coinY.get(i));
+			setBlocks(coinX.get(i),15-coinY.get(i), block.get(i)); //edited block
+			//addCoin(coinX.get(i),15-coinY.get(i));
     	}								 
     	coinX = new ArrayList<Integer>((Arrays.asList(332,333,334,335,336,337,338,339,340,341,342,343)));
     	coinY = new ArrayList<Integer>((Arrays.asList(  5,  6,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7)));
     	block = new ArrayList<Integer>((Arrays.asList( 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23)));
     	for(int i = 0; i<coinX.size(); i++) {
-			//setBlocks(coinX.get(i),15-coinY.get(i), block.get(i)); //edited block
-			addCoin(coinX.get(i),15-coinY.get(i));
+			setBlocks(coinX.get(i),15-coinY.get(i), block.get(i)); //edited block
+			//addCoin(coinX.get(i),15-coinY.get(i));
     	}
     	
     	return 0;
