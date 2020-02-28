@@ -49,7 +49,7 @@ public class LevelGenerator
     }
     
     private Level createCustomizedLevel(long seed, int difficulty, int type) {
-    	Level level = new Level(width,height); 
+    	Level level = new Level(width, height); 
     	this.type = type;
         ///////////// EDITED
         odds[ODDS_STRAIGHT] = 1;
@@ -323,7 +323,7 @@ public class LevelGenerator
     			addCoin(coinX.get(i),15-coinY.get(i));
     	}											//	   			*   *   *   *   *   *   *   *   *    S   S   S   S   S   S   S   S   S   S   S   S										 
     	coinX = new ArrayList<Integer>((Arrays.asList(280,286,294, 328,328,328,329,329,329,330,330,330, 332,333,334,335,336,337,338,339,340,341,342,343)));
-    	coinY = new ArrayList<Integer>((Arrays.asList(  4,  5,  5,   6,  7,  8,  6,  7,  8,  6,  7,  8,   6,  7,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8)));
+    	coinY = new ArrayList<Integer>((Arrays.asList(  4,  5,  5,   5,  6,  7,  5,  6,  7,  5,  6,  7,   6,  7,  8,  8,  8,  8,  8,  8,  8,  8,  8,  8)));
     	for(int i = 0; i<coinX.size(); i++) {
     			addCoin(coinX.get(i),15-coinY.get(i));
     	}
@@ -359,6 +359,14 @@ public class LevelGenerator
     	for(int i = 0; i<coinX.size(); i++) {
 			setBlocks(coinX.get(i),15-coinY.get(i), block.get(i)); //edited block
 			//addCoin(coinX.get(i),15-coinY.get(i));
+    	}
+		
+    	coinX = new ArrayList<Integer>((Arrays.asList(233,234,268,269,233,233,233,268,268)));
+    	coinY = new ArrayList<Integer>((Arrays.asList(  6,  6,  5,  5,  5,  4,  3,  4,  3)));
+    	block = new ArrayList<Integer>((Arrays.asList(-124,-123,-124,-123,-108,-108,-108,-108,-108)));
+    	for(int i = 0; i<coinX.size(); i++) {
+    			setBlocks(coinX.get(i),15-coinY.get(i), block.get(i)); //edited block
+    			//addCoin(coinX.get(i),15-coinY.get(i));
     	}
     	
     	return 0;

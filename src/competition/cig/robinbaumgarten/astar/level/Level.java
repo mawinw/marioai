@@ -111,10 +111,10 @@ public class Level implements Cloneable
     	int minY = marioBlockY - scopeY;
     	int maxY = marioBlockY + scopeY;
     	if(minX < 0) minX = 0;
-    	if(minX > width) maxX = width;
-    	if(minY < 0) minX = 0;
-    	if(minY > height) minX = height;
-
+    	if(maxX > width) maxX = width;
+    	if(minY < 0) minY = 0;
+    	if(maxY > height) maxY = height;
+    	//System.out.println("area: ["+minX+","+minY+"]to["+maxX+","+maxY+"]");
     	minDistance = utility.calculateDistance(minX*16, minX*16, maxX*16, maxY*16);
 
         for (int i = minY; i < maxY; i++)
@@ -128,7 +128,7 @@ public class Level implements Cloneable
             		)
             		System.out.print(utility.padString(getBlock(j,i)));
             		else {
-            		float d = utility.calculateDistance(mx, my, j*16, i*16);
+            		float d = utility.calculateDistance(mx, my, j*16, i*16); //mario central
 	        		if (d < minDistance) {
 	        			minDistance = d;
 	        			coinX = (float) j;
@@ -144,9 +144,9 @@ public class Level implements Cloneable
             System.out.println(" ");
         }
     	if(coinX == -1 || coinY == -1) {
-    		System.out.println("coin not found ;-;, make max x to be coin");
-			coinX = (float) marioBlockX + scopeX;
-			coinY = (float) marioBlockY;
+    		System.out.println("coin not found ;-;, don't make max x to be coin");
+			//coinX = (float) marioBlockX + scopeX;
+			//coinY = (float) marioBlockY;
     	}
     	else {
     		System.out.println("coin found");
