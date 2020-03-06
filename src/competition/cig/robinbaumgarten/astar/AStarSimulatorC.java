@@ -327,7 +327,7 @@ public class AStarSimulatorC
     	boolean currentGood = false;		// is the current node good (= we're not getting hurt)
     										// Mawinw's edit : to be modified that the node is good if we collect the coin or get the kills
     	int ticks = 0;
-    	int maxRight = 30;					// distance to plan to the right //mawinw: former 176
+    	int maxRight = 170;					// distance to plan to the right //mawinw: former 176
     	
     	int maxLeft = -10;					// mawinw:distance to plan to the left
 
