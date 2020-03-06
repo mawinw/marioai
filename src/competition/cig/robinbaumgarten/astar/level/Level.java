@@ -121,12 +121,13 @@ public class Level implements Cloneable
         {
             for (int j = minX; j < maxX; j++) {
             	
-            	if((j == marioBlockX && i == marioBlockY) || (j == marioBlockX && i == marioBlockY-1))
+            	if((j == marioBlockX && i == marioBlockY) || (j == marioBlockX && i == marioBlockY-1)) {
                 	System.out.print(utility.padString("MARIO"));
+            	}
             	else{
-            		if(getBlock(j,i) != 34
-            		)
-            		System.out.print(utility.padString(getBlock(j,i)));
+            		if(getBlock(j,i) != 34) {
+            			System.out.print(utility.padString(getBlock(j,i)));
+            		}
             		else {
             		float d = utility.calculateDistance(mx, my, j*16, i*16); //mario central
 	        		if (d < minDistance) {
@@ -141,15 +142,17 @@ public class Level implements Cloneable
             	}
             }
             }
-            System.out.println(" ");
+            if(utility.verbose > 1) {
+            	System.out.println(" ");
+            }
         }
     	if(coinX == -1 || coinY == -1) {
-    		System.out.println("coin not found ;-;, don't make max x to be coin");
+    		System.out.print(utility.padString("coin not found ;-;, don't make max x to be coin"));
 			//coinX = (float) marioBlockX + scopeX;
 			//coinY = (float) marioBlockY;
     	}
     	else {
-    		System.out.println("coin found");
+    		System.out.print(utility.padString("coin found"));
     	}
 		a[0] = coinX*16;
 		a[1] = coinY*16;

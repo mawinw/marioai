@@ -5,8 +5,10 @@ import java.lang.Math;
 
 public class utility {
 	
+	public static int verbose = 0;
 	public static void printScene(byte[][] scene)
 	{
+		if (verbose < 1) return;
 		   for(int i = 0; i < 22; i++)
 		   {
 			   for(int j = 0; j < 22; j++)
@@ -28,6 +30,7 @@ public class utility {
    }
 	public static void printArray(float[] array)
 	{
+		if (verbose < 1) return;
 			System.out.println(Arrays.toString(array));
 	}
 	
@@ -57,6 +60,7 @@ public class utility {
 		return true;
 	}
 	public static String padString(String s) {
+		if (verbose < 1) return "";
 		int length = s.length();
 		switch(length) {
 		case 1:

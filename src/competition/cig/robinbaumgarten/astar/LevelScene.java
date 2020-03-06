@@ -33,7 +33,7 @@ public class LevelScene implements SpriteContext, Cloneable
     public int tick;
     
     //public int verbose = 0; // set to > 0 for debugging output
-    public int verbose = 9; // set to > 0 for debugging output
+    public int verbose = 0; // set to > 0 for debugging output
 
     public boolean paused = true;
     public int startTime = 0;

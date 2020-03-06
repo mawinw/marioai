@@ -44,7 +44,8 @@ public class SimpleMawAgent implements Agent
     	
     	// everything with "verbose" in it is debug output. 
     	// Set Levelscene.verbose to a value greater than 0 to enable some debug output.
-    	System.out.println("-----------------------------------------------------------------------------------------------"
+
+		if (sim.levelScene.verbose > 2) System.out.println("-----------------------------------------------------------------------------------------------"
     			+ "-----------------------");
     	String s = "Fire";
     	if (!sim.levelScene.mario.fire)
@@ -61,11 +62,12 @@ public class SimpleMawAgent implements Agent
      	byte[][] scene = observation.getLevelSceneObservationZ(0);
     	float[] enemies = observation.getEnemiesFloatPos();
 		float[] realMarioPos = observation.getMarioFloatPos();
+		if (sim.levelScene.verbose > 0) {
 		utility.printScene(scene);
-		//utility.printArray(enemies);
+		utility.printArray(enemies);
 		System.out.print("Mario Position: ");
 		utility.printArray(realMarioPos);
-		
+		}
     	if (sim.levelScene.verbose > 2) System.out.println("Simulating using action: " + sim.printAction(action));
         
     	// Advance the simulator to the state of the "real" Mario state
