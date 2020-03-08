@@ -5,7 +5,7 @@ import java.lang.Math;
 
 public class utility {
 	
-	public static int verbose = 0;
+	public static int verbose = 10;
 	public static void printScene(byte[][] scene)
 	{
 		if (verbose < 1) return;

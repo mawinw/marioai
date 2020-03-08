@@ -667,7 +667,6 @@ public class AStarSimulatorC
     	    	
     			actions.add(createAction(true, false, false, false, false));									  //l
     			
-    	    	
     		}
     		return actions;
     	}
