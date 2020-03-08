@@ -24,7 +24,7 @@ public class SimpleMawAgent implements Agent
 
     public SimpleMawAgent()
     {
-        setName("SimpleMawAgent");
+        setName("AStarCoinMaw");
         reset();
     }
 
