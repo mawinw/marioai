@@ -12,6 +12,7 @@ import ch.idsia.ai.tasks.Task;
 import ch.idsia.tools.CmdLineOptions;
 import ch.idsia.tools.EvaluationOptions;
 import bu.mawinw.agent.SimpleMawAgent;
+import bu.mawinw.agent.AStarKillerMaw;
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,7 +27,8 @@ public class Play {
         //Agent controller = new CheaterKeyboardAgent();
         //Agent controller = new AStarAgent();
         //Agent controller = new StrollingAgent();
-        Agent controller = new SimpleMawAgent();
+        //Agent controller = new SimpleMawAgent();
+        Agent controller = new AStarKillerMaw();
         if (args.length > 0) {
             controller = AgentsPool.load (args[0]);
             AgentsPool.addAgent(controller);
