@@ -46,6 +46,7 @@ public class HumanKeyboardAgent extends KeyAdapter implements Agent
     	float[] enemies = observation.getEnemiesFloatPos();
 		float[] realMarioPos = observation.getMarioFloatPos();
 		String bitmapOb = observation.getBitmapEnemiesObservation();
+		System.out.println("------------------------------------------------------------------");
 		//utility.printScene(scene);
 		//utility.printScene(enemy);
 		System.out.println("MERGED OBSERVATION:");

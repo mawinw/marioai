@@ -104,8 +104,8 @@ public class Level implements Cloneable
 
     	int marioBlockX = (int)mx/16;
     	int marioBlockY = (int)my/16;
-    	int scopeX = 9;
-    	int scopeY = 9;
+    	int scopeX =11;
+    	int scopeY =11;
     	int minX = marioBlockX - scopeX;
     	int maxX = marioBlockX + scopeX;
     	int minY = marioBlockY - scopeY;

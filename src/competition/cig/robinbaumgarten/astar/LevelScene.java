@@ -15,6 +15,7 @@ import competition.cig.robinbaumgarten.astar.sprites.Mushroom;
 import competition.cig.robinbaumgarten.astar.sprites.Shell;
 import competition.cig.robinbaumgarten.astar.sprites.Sprite;
 import competition.cig.robinbaumgarten.astar.sprites.SpriteContext;
+import bu.mawinw.util.utility;
 
 // This is the class containing an entire world state.
 // It is taken from the Mario physics engine and has been adapted somewhat to
@@ -22,7 +23,7 @@ import competition.cig.robinbaumgarten.astar.sprites.SpriteContext;
 
 public class LevelScene implements SpriteContext, Cloneable
 {
-    private List<Sprite> sprites = new ArrayList<Sprite>();
+    public List<Sprite> sprites = new ArrayList<Sprite>();
     private List<Sprite> spritesToAdd = new ArrayList<Sprite>();
     private List<Sprite> spritesToRemove = new ArrayList<Sprite>();
 
@@ -610,5 +611,27 @@ public class LevelScene implements SpriteContext, Cloneable
         }
 		sprites = newSprites;
 		return requireReplanning;
+	}
+
+    // mawinw: add return nearest enemy
+	public float[] findNearestEmemy(float mx, float my) {
+    	float[] ret = new float[4];
+    	ret[0] = -1;
+    	ret[1] = -1;
+    	ret[2] = -1;
+    	ret[3] = -1;
+    	float minDistance = 1000;
+    	for(Sprite s: sprites) {
+    		if(s.kind == Sprite.KIND_GREEN_KOOPA) {
+    			float dist = utility.calculateDistance(s.x, s.y-20, mx, my);
+    			if(dist < minDistance) {
+    				ret[0] = s.kind;
+    				ret[1] = s.x;
+    				ret[2] = s.y-20;
+    				ret[3] = dist;
+    			}
+    		}
+    	}
+    	return ret;
 	}
 }

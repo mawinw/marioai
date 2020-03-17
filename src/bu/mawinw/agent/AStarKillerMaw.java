@@ -10,6 +10,7 @@ import ch.idsia.mario.environments.Environment;
 
 import competition.cig.robinbaumgarten.astar.AStarSimulator;
 import competition.cig.robinbaumgarten.astar.AStarSimulatorC;
+import competition.cig.robinbaumgarten.astar.AStarSimulatorK;
 
 import bu.mawinw.util.utility;
 
@@ -17,7 +18,7 @@ public class AStarKillerMaw implements Agent
 {
     private String name;
     private boolean[] action;
-    private AStarSimulatorC sim;
+    private AStarSimulatorK sim;
     private float lastX = 0;
     private float lastY = 0;
 
@@ -32,7 +33,7 @@ public class AStarKillerMaw implements Agent
     
     {
         action = new boolean[Environment.numberOfButtons];
-        sim = new AStarSimulatorC();
+        sim = new AStarSimulatorK();
     }
 
     public boolean[] getAction(Environment observation)
@@ -60,13 +61,16 @@ public class AStarKillerMaw implements Agent
     	
     	// get the environment and enemies from the Mario API
      	byte[][] scene = observation.getLevelSceneObservationZ(0);
+     	byte[][] completeScene = observation.getCompleteObservation(); //does not work with current simulator
     	float[] enemies = observation.getEnemiesFloatPos();
 		float[] realMarioPos = observation.getMarioFloatPos();
+		
 		if (sim.levelScene.verbose > 0) {
-		utility.printScene(scene);
-		utility.printArray(enemies);
-		System.out.print("Mario Position: ");
-		utility.printArray(realMarioPos);
+			utility.printScene(scene);
+			//utility.printScene(completeScene);
+			utility.printArray(enemies);
+			System.out.print("Mario Position: ");
+			utility.printArray(realMarioPos);
 		}
     	if (sim.levelScene.verbose > 2) System.out.println("Simulating using action: " + sim.printAction(action));
         
