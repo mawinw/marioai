@@ -81,8 +81,8 @@ public class LevelGenerator
         
         while (length < level.width - 64) //build zone until near finish line
         {
-            length += buildZone(length, level.width - length); //fix this function
-            //length += buildZoneSequence(length, level.width - length); 
+            //length += buildZone(length, level.width - length); //fix this function
+            length += buildZoneSequence(length, level.width - length); 
         }
 
         // build finish line
@@ -155,7 +155,7 @@ public class LevelGenerator
             totalOdds += odds[i];
             odds[i] = totalOdds - odds[i];
         }
-
+        //type = 0; //mawinw: 1,2 have ceiling
         lastSeed = seed;
         level = new Level(width, height);
         random = new Random(seed);
@@ -208,7 +208,7 @@ public class LevelGenerator
         
         addAllCoin();
         addBrick();
-        fixWalls();
+        fixWalls(); //mawinw: here
         return level;
     }
 
@@ -1023,6 +1023,27 @@ public class LevelGenerator
             }
         }
         blockify(level, blockMap, width + 1, height + 1);
+
+        //mawinw: beautify map
+        
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                int blocks = level.getBlock(x, y);
+                System.out.println(blocks);
+                if (blocks == -116) level.setBlock(x, y, (byte) (-128));
+                if (blocks == -115) level.setBlock(x, y, (byte) (-127));
+                if (blocks == -114) level.setBlock(x, y, (byte) (-126));
+                if (blocks == -113) level.setBlock(x, y, (byte) (-125));
+                if (blocks == -100) level.setBlock(x, y, (byte) (-112));
+                if (blocks == -99)  level.setBlock(x, y, (byte) (-111));
+                if (blocks == -98)  level.setBlock(x, y, (byte) (-110));
+                if (blocks == -97)  level.setBlock(x, y, (byte) (-109));
+            }
+        }
+        
+        
     }
 
     private void blockify(Level level, boolean[][] blocks, int width, int height)
