@@ -119,6 +119,15 @@ public class CheaterKeyboardAgent extends KeyAdapter implements Agent {
                     GlobalOptions.AdjustMarioComponentFPS();
                 }
                 break;
+            case 48: //chr(48) is 0 //mawinw: added toggle 1/24 FPS
+                if (isPressed)
+                {
+                	if(GlobalOptions.FPS > 2) GlobalOptions.FPS = 1;
+                	else GlobalOptions.FPS = 24;
+                    LOGGER.println("FPS SWITCH " + GlobalOptions.FPS, LOGGER.VERBOSE_MODE.INFO);
+                    GlobalOptions.AdjustMarioComponentFPS();
+                }
+                break;
             case 56:  // chr(56) = 8
                 if (isPressed)
                 {
