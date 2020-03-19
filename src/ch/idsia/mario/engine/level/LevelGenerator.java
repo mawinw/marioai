@@ -286,7 +286,8 @@ public class LevelGenerator
         l += buildTubes(x+l, maxLength-l, 19, 2, 0, 3, true);
         l += buildTubes(x+l, maxLength-l, 3,  2, 0, 2, true);
         l += buildTubes(x+l, maxLength-l, 9,  2, 0, 3, false);
-        l += buildStraight(x+l, maxLength-l, true, 25, 2);
+        l += buildStraight(x+l, maxLength-l, true, 10, 2);
+        l += buildHillStraight(x+l, maxLength-l, 18, 2, 0, 3, 10);
         return l;
         /*
         switch (type)

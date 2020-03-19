@@ -514,7 +514,7 @@ public class AStarSimulatorK
 		    		//mawinw: new coin detected. case1: coin is collected. case2: mario is nearer at new coin
 
 		    		if (levelScene.verbose > 4) System.out.println("-MARIO TUP/FOUND NEW COIN!!!");
-						current.bestDistanceToCoin = 0;
+						//current.bestDistanceToCoin = 0;
 			        	dist = utility.calculateDistance(current.parentPos.nearestCoinX, current.parentPos.nearestCoinY,current.sceneSnapshot.mario.x,current.sceneSnapshot.mario.y);
 			        	distThreshold = (float) (dist + 0.1);
 		    	}
@@ -543,7 +543,7 @@ public class AStarSimulatorK
         	    		System.out.print("bestDistanceToCoin:");
         	    		System.out.println(distThreshold - dist);
         	    	}
-    				current.bestDistanceToCoin = distThreshold - dist;
+    				current.bestDistanceToCoin = (float) ((distThreshold - dist)*0.8);
     				//distThreshold = dist;
     				//currentGood = true;
     				bestPosition = current;
@@ -772,18 +772,11 @@ public class AStarSimulatorK
     	float mx = node.sceneSnapshot.mario.x;
     	float my = node.sceneSnapshot.mario.y;
 
-    	if (levelScene.verbose > 4) {
-    		//System.out.println("start calculate nearest coin");
-    		System.out.print("Simul Position: [");
-    		System.out.print(mx);
-    		System.out.print(", ");
-    		System.out.print(my);
-    		System.out.println("]");
-    	}
     	a = node.sceneSnapshot.level.nearestCoin(mx,my);
     	if (levelScene.verbose > 4) {
     		System.out.print("coin: ");
     		utility.printArray(a);
+    		System.out.println("Simul Position: [" + mx + ", " + my + "]");
     	}
     	return a;
     }
