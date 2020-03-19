@@ -242,7 +242,7 @@ public class LevelGenerator
     
     private int buildZoneSequence(int x, int maxLength)
     {
-    	type = 1;
+    	type = 0;
     	int l = 0;
         l += buildStraight(x, maxLength, true, 10, 2);
     	addEnemy(x+l-10+12, 3, Enemy.ENEMY_GREEN_KOOPA);
@@ -1023,26 +1023,6 @@ public class LevelGenerator
             }
         }
         blockify(level, blockMap, width + 1, height + 1);
-
-        //mawinw: beautify map
-        
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                int blocks = level.getBlock(x, y);
-                System.out.println(blocks);
-                if (blocks == -116) level.setBlock(x, y, (byte) (-128));
-                if (blocks == -115) level.setBlock(x, y, (byte) (-127));
-                if (blocks == -114) level.setBlock(x, y, (byte) (-126));
-                if (blocks == -113) level.setBlock(x, y, (byte) (-125));
-                if (blocks == -100) level.setBlock(x, y, (byte) (-112));
-                if (blocks == -99)  level.setBlock(x, y, (byte) (-111));
-                if (blocks == -98)  level.setBlock(x, y, (byte) (-110));
-                if (blocks == -97)  level.setBlock(x, y, (byte) (-109));
-            }
-        }
-        
         
     }
 
