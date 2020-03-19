@@ -179,7 +179,7 @@ public class AStarSimulatorK
 	    	float xa = levelScene.mario.xa > 0 ? levelScene.mario.xa : -levelScene.mario.xa;
 	    	//remainingTime = calcRemainingTime(levelScene.mario.x, levelScene.mario.xa)
 	    	remainingTime = calcRemainingTime(levelScene.mario.x, xa)
-	    	    	 	+ (getMarioDamage() - initialDamage) * (1000 - 100 * timeElapsed)
+	    	    	 	+ (getMarioDamage() - initialDamage) * (10000 - 100 * timeElapsed)
 	    	 	//- 1*(getMarioCoin() - initialCoin) * (1000000 - 100 * timeElapsed)
 	    	 	//+ calculateNearestCoin(this)[2]
 	    	 	;

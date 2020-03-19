@@ -244,6 +244,8 @@ public class LevelGenerator
     {
     	type = 0;
     	int l = 0;
+    	boolean hardmode = true;
+    	
         l += buildStraight(x, maxLength, true, 10, 2);
     	addEnemy(x+l-10+12, 3, Enemy.ENEMY_GREEN_KOOPA);
         l += buildHillStraight(x+l, maxLength-l, 24, 2, 1, 2, 18);
@@ -261,6 +263,11 @@ public class LevelGenerator
         l += buildHillStraight(x+l, maxLength-l, 10, 2, 0, 4, 7);
         l += buildStraight(x+l, maxLength-l, true, 64, 2);
     	addEnemy(x+l-64+43, 3, Enemy.ENEMY_GREEN_KOOPA);
+    	if(hardmode) {
+        	addEnemy(x+l-64+45, 3, Enemy.ENEMY_GREEN_KOOPA);
+        	addEnemy(x+l-64+47, 3, Enemy.ENEMY_GREEN_KOOPA);
+    		
+    	}
         
 
         l += buildStraight(x+l, maxLength-l, true, 7, 3);
@@ -268,6 +275,12 @@ public class LevelGenerator
         l += buildStraight(x+l, maxLength-l, true, 3, 5);
         l += buildStraight(x+l, maxLength-l, true, 18, 6);
     	addEnemy(x+l-18+15, 7, Enemy.ENEMY_GREEN_KOOPA);
+    	
+    	if(hardmode) {
+        	addEnemy(x+l-18+17, 7, Enemy.ENEMY_GREEN_KOOPA);
+        	addEnemy(x+l-18+19, 7, Enemy.ENEMY_GREEN_KOOPA);
+    		
+    	}
     	
         l += buildStraight(x+l, maxLength-l, true, 20, 2);
         l += buildTubes(x+l, maxLength-l, 2, 2, 0, 2, true);
@@ -288,6 +301,7 @@ public class LevelGenerator
         l += buildTubes(x+l, maxLength-l, 9,  2, 0, 3, false);
         l += buildStraight(x+l, maxLength-l, true, 10, 2);
         l += buildHillStraight(x+l, maxLength-l, 18, 2, 0, 3, 10);
+        
         return l;
         /*
         switch (type)
