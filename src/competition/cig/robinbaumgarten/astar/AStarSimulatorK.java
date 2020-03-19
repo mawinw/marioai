@@ -176,8 +176,10 @@ public class AStarSimulatorK
 	    	System.out.println("remaining time after simulation: ");
 	    	System.out.println( calcRemainingTime(levelScene.mario.x, levelScene.mario.xa));
 	    	}
-	    	remainingTime = calcRemainingTime(levelScene.mario.x, levelScene.mario.xa)
-	    	 	+ (getMarioDamage() - initialDamage) * (1000 - 100 * timeElapsed)
+	    	float xa = levelScene.mario.xa > 0 ? levelScene.mario.xa : -levelScene.mario.xa;
+	    	//remainingTime = calcRemainingTime(levelScene.mario.x, levelScene.mario.xa)
+	    	remainingTime = calcRemainingTime(levelScene.mario.x, xa)
+	    	    	 	+ (getMarioDamage() - initialDamage) * (1000 - 100 * timeElapsed)
 	    	 	//- 1*(getMarioCoin() - initialCoin) * (1000000 - 100 * timeElapsed)
 	    	 	//+ calculateNearestCoin(this)[2]
 	    	 	;
