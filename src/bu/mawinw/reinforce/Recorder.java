@@ -21,7 +21,7 @@ public class Recorder {
 	private String fileName = "episode";
 	private int episode = 0;
 	private List<String> frames;
-	private String path="D:\\Senior Project\\Eclispe_Workspace\\marioai_AI_MARP\\marioai\\marioai\\src\\bu\\mawinw\\record\\";
+	private String path="C:\\Users\\Mawin\\Desktop\\Eclispe_Workspace\\marioai_AI_MARP\\marioai\\marioai\\src\\bu\\mawinw\\record\\";
 
 	public Recorder() {
 		this.frames = new ArrayList<String>();
@@ -57,7 +57,7 @@ public class Recorder {
 		//save file
 		String saveName = fileName+"_"+Integer.toString(episode)+".csv";
 		try {
-			System.out.println("going in writing at "+path+saveName);
+			System.out.println("write episode record: "+path+saveName);
 			FileWriter writer = new FileWriter(path+saveName);
 			for(String frame:frames) {
 				writer.append(frame).append("\r\n");

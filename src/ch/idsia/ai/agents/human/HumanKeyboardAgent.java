@@ -63,10 +63,6 @@ public class HumanKeyboardAgent extends KeyAdapter implements Agent
 		utility.printArray(realMarioPos);
 		System.out.println("\n\n");
 		
-		
-		System.out.println("BITMAP OB");
-		System.out.println(bitmapOb);
-		System.out.println("\n\n");
         return Action;
     }
 

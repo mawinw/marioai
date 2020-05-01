@@ -332,7 +332,7 @@ public class LevelGenerator
     	for(int i = 0; i<coinX.size(); i++) {
     			addCoin(coinX.get(i),15-coinY.get(i));
     	}											//	   *   *   *     										 
-    	coinX = new ArrayList<Integer>((Arrays.asList(190,210,211,212,214,224,225,226,229,210,211, 216, 217, 218, 261,261,262,262,263,263,264,264,265,265,266,266)));
+    	coinX = new ArrayList<Integer>((Arrays.asList(190,210,211,212,214,224,225,226,229,230,231, 236, 237, 238, 261,261,262,262,263,263,264,264,265,265,266,266)));
     	coinY = new ArrayList<Integer>((Arrays.asList(  4,  4,  4,  4,  3,  7,  7,  7, 10, 10, 10,   7,   7,   7,   9, 10,  9, 10,  9, 10,  9, 10,  9, 10,  9, 10)));
     	for(int i = 0; i<coinX.size(); i++) {
     			addCoin(coinX.get(i),15-coinY.get(i));
@@ -345,8 +345,9 @@ public class LevelGenerator
     	
     	return 0;
     }
+	//22 = Pup block, 21 = Coin block <<21 cause observation bug due to incorrectness, change to 21
     private int addBrick() {
-    	//22 = Pup block, 21 = Coin block <<21 cause observation bug due to incorrectness, change to 21
+    	//22 = Pup block, 23 = Coin block
     	//16 = brick 17 = coin brick 18 = pup brick
     	ArrayList<Integer> coinX = new ArrayList<Integer>((Arrays.asList(48, 50, 71, 72,210,211,212 )));
     	ArrayList<Integer> coinY = new ArrayList<Integer>((Arrays.asList( 5,  5,  5,  5,  5,  5,  5 )));
@@ -361,7 +362,7 @@ public class LevelGenerator
     	for(int i = 0; i<coinX.size(); i++) {
 			//setBlocks(coinX.get(i),15-coinY.get(i), block.get(i));
     	}
-    	coinX = new ArrayList<Integer>((Arrays.asList(217, 218)));
+    	coinX = new ArrayList<Integer>((Arrays.asList(237, 238)));
     	coinY = new ArrayList<Integer>((Arrays.asList(9,   9)));
     	block = new ArrayList<Integer>((Arrays.asList(21,  21 )));
     	for(int i = 0; i<coinX.size(); i++) {
@@ -376,9 +377,9 @@ public class LevelGenerator
 			//addCoin(coinX.get(i),15-coinY.get(i));
     	}
 		
-    	coinX = new ArrayList<Integer>((Arrays.asList(213,214,268,269,213,213,213,268,268)));
+    	coinX = new ArrayList<Integer>((Arrays.asList(233,234,268,269,233,233,233,268,268)));
     	coinY = new ArrayList<Integer>((Arrays.asList(  6,  6,  5,  5,  5,  4,  3,  4,  3)));
-    	block = new ArrayList<Integer>((Arrays.asList(-124,-121,-124,-121,-108,-108,-108,-108,-108)));
+    	block = new ArrayList<Integer>((Arrays.asList(-124,-123,-124,-123,-108,-108,-108,-108,-108)));
     	for(int i = 0; i<coinX.size(); i++) {
     			setBlocks(coinX.get(i),15-coinY.get(i), block.get(i)); //edited block
     			//addCoin(coinX.get(i),15-coinY.get(i));

@@ -1,9 +1,12 @@
 package bu.mawinw.reinforce;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.Random;
 
 import org.deeplearning4j.arbiter.util.ClassPathResource;
+import org.deeplearning4j.datasets.iterator.IteratorMultiDataSetIterator;
 import org.deeplearning4j.examples.download.DownloaderUtility;
 import org.deeplearning4j.nn.api.Layer;
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
@@ -17,6 +20,8 @@ import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.nn.weights.WeightInit;
 import org.nd4j.linalg.activations.Activation;
 import org.nd4j.linalg.api.ndarray.INDArray;
+import org.nd4j.linalg.dataset.MultiDataSet;
+import org.nd4j.linalg.dataset.api.iterator.MultiDataSetIterator;
 import org.nd4j.linalg.factory.Nd4j;
 import org.nd4j.linalg.learning.config.Sgd;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
@@ -36,9 +41,9 @@ public class ReinforceModel {
 	public MultiLayerNetwork modelB;
 
 	private double gamma = 0.95;	//discounted reward used at training time?
-	private double epsilon = 0.95;
+	public double epsilon = 0.95;
 	private double epsilonDecay = 0.8;
-	private double epsilonMin = 0.1;
+	private double epsilonMin = 0.01;
 	private double numAction = 12;
 	//public double learningRate = 0.005; //defined at model compile time
 	
@@ -46,26 +51,28 @@ public class ReinforceModel {
 	public ReinforceModel() {
 		try {
 			//try modelA or modelB here
-			modelB = loadModelConv2D();
+			modelA = loadModelInception();
+//			modelB = loadModelConv2D();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public void loadModelInception() throws Exception{
+	public ComputationGraph loadModelInception() throws Exception{
 		System.out.println("load model . . .");
-		String jsonPath = "C:\\Users\\Mawin\\eclipse\\ModelWeightFiles\\infinite_mario_model.json";
-		String weightPath = "C:\\Users\\Mawin\\eclipse\\ModelWeightFiles\\infinite_mario_model.hdf5";
+		String jsonPath = "C:\\Users\\Mawin\\Desktop\\Eclispe_Workspace\\marioai_AI_MARP\\marioai\\marioai\\src\\bu\\mawinw\\reinforce\\inception_with_info.json";
+		String weightPath = "C:\\Users\\Mawin\\Desktop\\Eclispe_Workspace\\marioai_AI_MARP\\marioai\\marioai\\src\\bu\\mawinw\\reinforce\\inception_with_info.hdf5";
+		String h5Path = "C:\\Users\\Mawin\\Desktop\\Eclispe_Workspace\\marioai_AI_MARP\\marioai\\marioai\\src\\bu\\mawinw\\reinforce\\inception_with_info.h5";
         final String jsonFile = new File(jsonPath).getAbsolutePath();
         final String weightFile = new File(weightPath).getAbsolutePath();
-		System.out.println("file path OK . . .");
-		
+//		System.out.println("file path OK . . .");
+//		
         //File file = new File(fileName);
 		//importKerasModelAndWeights(String modelJsonFilename, String weightsHdf5Filename)
 		ComputationGraph model = KerasModelImport.importKerasModelAndWeights(
-				jsonPath, 
-				weightPath);
+				h5Path);
+		return model;
 
 	}
 	
@@ -74,7 +81,7 @@ public class ReinforceModel {
 	public MultiLayerNetwork loadModelConv2D() throws Exception{
 		//String jsonPath = "C:\\Users\\Mawin\\eclipse\\ModelWeightFiles\\infinite_mario_model.json";
 		//String weightPath = "C:\\Users\\Mawin\\eclipse\\ModelWeightFiles\\infinite_mario_model.hdf5";
-		String h5Path = "C:\\Users\\Mawin\\eclipse\\ModelWeightFiles\\simple_conv2d_model.h5";
+		String h5Path = "C:\\Users\\Mawin\\Desktop\\Eclispe_Workspace\\marioai_AI_MARP\\marioai\\marioai\\src\\bu\\mawinw\\reinforce\\simple_conv2d_model.h5";
 
         final String h5File = new File(h5Path).getAbsolutePath();
 
@@ -87,7 +94,7 @@ public class ReinforceModel {
 	
 	public int act(byte[][] state) {
 
-		INDArray myArray = stateToINDArray(state);
+		INDArray stateScreen = stateToINDArray(state);
 		int action = 4;
 		//utility.printArray(output);
 		//System.out.println(myArray);
@@ -95,8 +102,27 @@ public class ReinforceModel {
 			action = (int) (Math.random()*numAction);
 		}
 		else {
-			int[] output = modelB.predict(myArray);
+			int[] output = modelB.predict(stateScreen);
 			action = output[0];
+		}
+		return action;
+	}
+	
+	public int act(byte[][] state, float[] marioInfo) {
+		int action = 4;
+		if(Math.random() < epsilon) {
+			action = (int) (Math.random()*numAction);
+		}
+		else {
+			INDArray stateScreen = stateToINDArray(state);
+			INDArray stateInfo = stateToINDArray(marioInfo);
+			INDArray[] input = new INDArray[2];
+			input[0] = stateScreen;
+			input[1] = stateInfo;
+			MultiDataSet modelInput = new MultiDataSet(input,input); //second field is label which is not cared
+			IteratorMultiDataSetIterator iter = new IteratorMultiDataSetIterator(Collections.singletonList((org.nd4j.linalg.dataset.api.MultiDataSet) modelInput).iterator(), 1);
+			INDArray output = modelA.outputSingle(iter);
+			action = output.argMax().getInt(0);
 		}
 		return action;
 	}
@@ -119,6 +145,21 @@ public class ReinforceModel {
 				   }
 				   myArray.putScalar(0,0, i, j, block);
 			   }
+		   }
+		return myArray;
+	}
+	
+	public INDArray stateToINDArray(float[] marioInfo) {
+        int nRows = 1;
+        int nColumns = 47;
+        int nDim = 1;
+        int miniBatchSize = 1;
+        INDArray myArray = Nd4j.zeros(miniBatchSize, nColumns);
+
+		   for(int i = 0; i < 47; i++)
+		   {
+				   float value = marioInfo[i];
+				   myArray.putScalar( 0, value);
 		   }
 		return myArray;
 	}
@@ -173,7 +214,10 @@ public class ReinforceModel {
 		else if (action[KEY_LEFT]==false&&action[KEY_RIGHT]==false&&action[KEY_DOWN]==false&&action[KEY_JUMP]==false&&action[KEY_SPEED]==false) return 11;
 		return 11;
 	}
-	
+	public void setEpsilon(String epsilon) {
+		this.epsilon = new Double(epsilon);
+		
+	}
 	public void nextEp() {
 		//set epsilon
 		if(epsilon * epsilonDecay < epsilonMin)

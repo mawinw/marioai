@@ -29,7 +29,7 @@ public class Play {
 //    	LoggerContext lc = new LoggerContext();
 //    	BasicConfigurator bc = new BasicConfigurator();
 //    	bc.configure(lc);
-        //Agent controller = new HumanKeyboardAgent();
+//        Agent controller = new HumanKeyboardAgent();
         //Agent controller = new CheaterKeyboardAgent();
         //Agent controller = new AStarAgent();
         //Agent controller = new StrollingAgent();
@@ -37,8 +37,7 @@ public class Play {
         //Agent controller = new AStarKillerMaw();
         Agent controller = new MawReinforceAgent();
         if (args.length > 0) {
-            controller = AgentsPool.load (args[0]);
-            AgentsPool.addAgent(controller);
+            controller = new MawReinforceAgent(args[0]);
         }
         EvaluationOptions options = new CmdLineOptions(new String[0]);
         options.setAgent(controller);

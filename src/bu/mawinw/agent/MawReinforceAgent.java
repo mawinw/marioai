@@ -25,8 +25,7 @@ public class MawReinforceAgent implements Agent
     private Recorder recorder;
     private ReinforceEnvironment RLEnv;
     private boolean isDone = false;
-    private int tmpFrameCount = 0;
-    
+
     private int ep = 1;
     private byte[][] state;
     private float[] marioInfo;
@@ -37,6 +36,13 @@ public class MawReinforceAgent implements Agent
     {
         setName("MawReinforceAgent");
         reset();
+        isNew = false;
+    }
+    public MawReinforceAgent(String epsilon)
+    {
+        setName("MawReinforceAgent");
+        reset();
+        model.setEpsilon(epsilon);
         isNew = false;
     }
 
@@ -108,12 +114,12 @@ public class MawReinforceAgent implements Agent
 		lastX = realMarioPos[0];
 		lastY = realMarioPos[1];
 
-		if(sim.levelScene.mario.status == 1 || sim.levelScene.mario.status == 0) {
+		if(sim.levelScene.mario.status == Mario.STATUS_WIN || sim.levelScene.mario.status == Mario.STATUS_DEAD) {
 			isDone = true;
 		}
 		// This is the call to the simulator (where all the planning work takes place)
         //action = sim.optimise();
-        int actionNo = model.act(nextState);
+        int actionNo = model.act(nextState, marioInfo);
 		float[] nextMarioInfo = RLEnv.getObservation(observation, sim.levelScene, actionNo);
         action = model.actionToBoolean(actionNo);
         float reward = RLEnv.reward;
@@ -121,6 +127,18 @@ public class MawReinforceAgent implements Agent
         if(isDone) {
         	ep++;
         	isDone = false;
+        	String status = "RUNNING";
+    		if(sim.levelScene.mario.status == Mario.STATUS_WIN) {
+    			status = 	"  WIN  ";
+    		}
+    		if(sim.levelScene.mario.status == Mario.STATUS_DEAD) {
+    			status = 	"  LOSE ";
+    		}
+    		String maxX = Float.toString(RLEnv.marioMaxX);
+    		String coins = Float.toString(sim.levelScene.coinsCollected);
+    		String kills = Integer.toString(observation.getKillsTotal());
+    		String epsilon = Double.toString(model.epsilon);
+        	System.out.println("END! status : "+status+" maxX : "+maxX+" coins : "+coins+" kills : "+kills+" epsilon : "+epsilon);
         }
         state = nextState;
         marioInfo = nextMarioInfo;

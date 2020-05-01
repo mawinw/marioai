@@ -49,7 +49,7 @@ public class ReinforceEnvironment {
 	private int otherTricks;
 	
 	private int isMarioCarrying;
-	private float marioMaxX = 32;
+	public float marioMaxX = 32;
 	public float reward = 0;
 	
 	public float[] marioInfo;
@@ -60,6 +60,7 @@ public class ReinforceEnvironment {
 	
 	public ReinforceEnvironment() {
 		reward = 0;
+		marioMaxX = 32;
 		
 		marioInfo = new float[featureCount + previousActionSize];
 		marioInfo[0] = mx = 32;	//mario x
@@ -232,6 +233,9 @@ public class ReinforceEnvironment {
 			marioMaxX = marioX;
 		}
 		else reward -= 1;
+		if(levelScene.mario.y >=192) {
+			reward -= 20;
+		}
         enemiesJumpedOn = observation.getKillsByStomp();
         enemiesKilled = observation.getKillsByFire();
         coinsCollected = levelScene.coinsCollected;
@@ -250,6 +254,14 @@ public class ReinforceEnvironment {
     	if(observation.getMarioMode() > mstate) {
     		reward += 300;
     	}
+    	
+    	if(levelScene.mario.status == Mario.STATUS_WIN) {
+    		reward += 2000;
+    	}
+    			
+    	else if(levelScene.mario.status == Mario.STATUS_DEAD) {
+    		reward -= 1000;
+		}
 	}
 	
 	private int checkIsJumpAble() {
