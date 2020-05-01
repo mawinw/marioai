@@ -33,7 +33,6 @@ public class LevelScene implements SpriteContext, Cloneable
     public float xCam, yCam, xCamO, yCamO; // left-over from rendering, can probably be removed.
     public int tick;
     
-    //public int verbose = 0; // set to > 0 for debugging output
     public int verbose = 0; // set to > 0 for debugging output
 
     public boolean paused = true;

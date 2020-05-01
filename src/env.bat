@@ -1,0 +1,1 @@
+conda activate py36env && jupyter notebook

@@ -1,7 +1,18 @@
 package bu.mawinw.util;
 
 import java.util.Arrays;
+
+import org.nd4j.linalg.api.ndarray.INDArray;
+import org.nd4j.linalg.factory.Nd4j;
+
 import java.lang.Math;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 
 public class utility {
 	
@@ -32,6 +43,11 @@ public class utility {
 	{
 		if (verbose < 1) return;
 			System.out.println(Arrays.toString(array));
+	}
+
+	public static void printArray(int[] array)
+	{
+		System.out.println(Arrays.toString(array));
 	}
 	
 	public static float calculateDistance(float x1, float y1, float x2, float y2) {
@@ -83,5 +99,26 @@ public class utility {
 		String bs = java.lang.Integer.toString(s);
 		return padString(bs);
 		
+	}
+	public static INDArray stateToINDArray(byte[][] state) {
+        int nRows = 22;
+        int nColumns = 22;
+        int nDim = 1;
+        int miniBatchSize = 1;
+        INDArray myArray = Nd4j.zeros(miniBatchSize, nDim, nRows, nColumns);
+
+		   for(int i = 0; i < 22; i++)
+		   {
+			   for(int j = 0; j < 22; j++)
+			   {
+				   int block = state[i][j];
+				   
+				   if((i==10 && j==10)||(i==11 && j==10)) {
+					   block = 99; //mario
+				   }
+				   myArray.putScalar(0,0, i, j, block);
+			   }
+		   }
+		return myArray;
 	}
 }

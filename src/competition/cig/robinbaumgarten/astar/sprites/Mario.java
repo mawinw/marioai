@@ -77,16 +77,16 @@ public class Mario extends Sprite implements Cloneable
 
     public boolean[] keys = new boolean[5];
     //public boolean[] cheatKeys;
-    private float runTime;
-    boolean wasOnGround = false;
+    public float runTime;
+    public boolean wasOnGround = false;
     public boolean onGround = false;
-    private boolean mayJump = false;
-    private boolean ducking = false;
+    public boolean mayJump = false;
+    public boolean ducking = false;
     public boolean sliding = false;
     public int jumpTime = 0;
-    private float xJumpSpeed;
-    private float yJumpSpeed;
-    private boolean canShoot = false;
+    public float xJumpSpeed;
+    public float yJumpSpeed;
+    public boolean canShoot = false;
 
     int width = 4;
     int height = 24;

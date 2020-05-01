@@ -176,7 +176,7 @@ public class AStarSimulatorK
 	    	System.out.println("remaining time after simulation: ");
 	    	System.out.println( calcRemainingTime(levelScene.mario.x, levelScene.mario.xa));
 	    	}
-	    	float xa = levelScene.mario.xa > 0 ? levelScene.mario.xa : -levelScene.mario.xa;
+	    	float xa = levelScene.mario.xa > 0 ? levelScene.mario.xa : 0;
 	    	//remainingTime = calcRemainingTime(levelScene.mario.x, levelScene.mario.xa)
 	    	remainingTime = calcRemainingTime(levelScene.mario.x, xa)
 	    	    	 	+ (getMarioDamage() - initialDamage) * (10000 - 100 * timeElapsed)
@@ -364,15 +364,6 @@ public class AStarSimulatorK
 	    	}
 	    	enemyInObservation = true;
     	}
-    	if (levelScene.verbose > 4) {
-    		System.out.print("NEAREST ENEMY:");
-    		utility.printArray(e);
-    	}    	
-    	else {
-	    	if (levelScene.verbose > 4) {
-	    		System.out.println("the enemy is not on observation screen");
-	    	}
-    	}
     	
     	//mawinw: calculate nearest coin
         float[] d = calculateNearestCoin(current); //mawinw: calculate at current, best position
@@ -397,7 +388,16 @@ public class AStarSimulatorK
 	    		System.out.println("the coin is not on observation screen");
 	    	}
     	}
-    	
+
+    	if (levelScene.verbose > 4) {
+    		System.out.print("NEAREST ENEMY:");
+    		utility.printArray(e);
+    	}    	
+    	else {
+	    	if (levelScene.verbose > 4) {
+	    		System.out.println("the enemy is not on observation screen");
+	    	}
+    	}
     	float bestDistanceToCoin = 0.1f;
     	
     	// Search until we've reached the right side of the screen, or if the time is up.
@@ -498,7 +498,8 @@ public class AStarSimulatorK
 	    	lastCoinY = d[1];
 	    	
 	    	boolean isCoinInNode = lastCoinX > -1 ? true : false;
-	    	if (enemyInNode) isCoinInNode = false;
+	    	//if (enemyInNode) isCoinInNode = false;
+	    	//isCoinInNode = false;
 	    	//current coin is not as same as last coin found, mario may tup it?
 
 	    	
