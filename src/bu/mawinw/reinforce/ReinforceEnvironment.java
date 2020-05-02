@@ -234,7 +234,7 @@ public class ReinforceEnvironment {
 		}
 		else reward -= 1;
 		if(levelScene.mario.y >=192) {
-			reward -= 20;
+			reward -= 2;
 		}
         enemiesJumpedOn = observation.getKillsByStomp();
         enemiesKilled = observation.getKillsByFire();
@@ -246,21 +246,21 @@ public class ReinforceEnvironment {
     		reward += (enemiesJumpedOn+enemiesKilled+otherTricks-killCount)*500;
     	}
     	if(coinsCollected-coinCount > 0) {
-    		reward += (coinsCollected-coinCount)*300;
+    		reward += (coinsCollected-coinCount)*10;
     	}
     	if(observation.getMarioMode() < mstate) {
-    		reward -= 300;
+    		reward -= 10;
     	}
     	if(observation.getMarioMode() > mstate) {
-    		reward += 300;
+    		reward += 10;
     	}
     	
-    	if(levelScene.mario.status == Mario.STATUS_WIN) {
-    		reward += 2000;
+    	if(((ch.idsia.mario.engine.MarioComponent) observation).getMarioStatus() == Mario.STATUS_WIN) {
+    		reward += 20;
     	}
     			
-    	else if(levelScene.mario.status == Mario.STATUS_DEAD) {
-    		reward -= 1000;
+    	else if(((ch.idsia.mario.engine.MarioComponent) observation).getMarioStatus() == Mario.STATUS_DEAD) {
+    		reward -= 10;
 		}
 	}
 	

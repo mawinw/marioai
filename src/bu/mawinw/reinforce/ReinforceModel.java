@@ -42,7 +42,7 @@ public class ReinforceModel {
 
 	private double gamma = 0.95;	//discounted reward used at training time?
 	public double epsilon = 0.95;
-	private double epsilonDecay = 0.8;
+	private double epsilonDecay = 0.995;
 	private double epsilonMin = 0.01;
 	private double numAction = 12;
 	//public double learningRate = 0.005; //defined at model compile time
@@ -215,8 +215,17 @@ public class ReinforceModel {
 		return 11;
 	}
 	public void setEpsilon(String epsilon) {
-		this.epsilon = new Double(epsilon);
-		
+		//DOS does not support floating point arguments so divide it with round instead
+		int round = new Integer(epsilon)*10;
+		for(int i = 0;i<round;i++) {
+
+			this.epsilon = this.epsilon * epsilonDecay;
+
+			if(this.epsilon < epsilonMin) {
+				this.epsilon = epsilonMin;
+				break;
+			}
+		}
 	}
 	public void nextEp() {
 		//set epsilon

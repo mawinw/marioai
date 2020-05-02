@@ -8,8 +8,11 @@ import java.io.FileWriter;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.nd4j.linalg.api.ndarray.INDArray;
@@ -70,5 +73,23 @@ public class Recorder {
 		}
 		this.episode += 1;
 		this.frames = new ArrayList<String>();
+	}
+	public void saveTrainingRecord(String info) {
+		//save file
+		String saveName = path+"playingInfo.txt";
+		try {
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+			Date date = new Date();
+			FileWriter writer = new FileWriter(saveName,true);
+			writer.append(dateFormat.format(date)+" "+info).append("\r\n");
+			writer.flush();
+			writer.close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.episode += 1;
+		this.frames = new ArrayList<String>();
+		
 	}
 }

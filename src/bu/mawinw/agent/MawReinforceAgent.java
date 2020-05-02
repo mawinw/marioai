@@ -1,6 +1,7 @@
 package bu.mawinw.agent;
 
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 
 import ch.idsia.ai.agents.Agent;
@@ -13,6 +14,7 @@ import bu.mawinw.util.utility;
 import bu.mawinw.reinforce.Recorder;
 import bu.mawinw.reinforce.ReinforceEnvironment;
 import bu.mawinw.reinforce.ReinforceModel;
+import ch.idsia.mario.engine.MarioComponent;
 
 public class MawReinforceAgent implements Agent
 {
@@ -114,7 +116,7 @@ public class MawReinforceAgent implements Agent
 		lastX = realMarioPos[0];
 		lastY = realMarioPos[1];
 
-		if(sim.levelScene.mario.status == Mario.STATUS_WIN || sim.levelScene.mario.status == Mario.STATUS_DEAD) {
+		if(((ch.idsia.mario.engine.MarioComponent) observation).getMarioStatus() == Mario.STATUS_WIN || ((ch.idsia.mario.engine.MarioComponent) observation).getMarioStatus() == Mario.STATUS_DEAD) {
 			isDone = true;
 		}
 		// This is the call to the simulator (where all the planning work takes place)
@@ -134,11 +136,14 @@ public class MawReinforceAgent implements Agent
     		if(sim.levelScene.mario.status == Mario.STATUS_DEAD) {
     			status = 	"  LOSE ";
     		}
-    		String maxX = Float.toString(RLEnv.marioMaxX);
-    		String coins = Float.toString(sim.levelScene.coinsCollected);
-    		String kills = Integer.toString(observation.getKillsTotal());
-    		String epsilon = Double.toString(model.epsilon);
-        	System.out.println("END! status : "+status+" maxX : "+maxX+" coins : "+coins+" kills : "+kills+" epsilon : "+epsilon);
+    		String maxX = utility.padString(new DecimalFormat("####.0").format(RLEnv.marioMaxX));
+    		String coins = utility.padString(Float.toString(sim.levelScene.coinsCollected));
+    		String kills = utility.padString(Integer.toString(observation.getKillsTotal()));
+    		String epsilon = new DecimalFormat("0.0##").format(model.epsilon); // rounded to 3 decimal places
+
+    		String endStatus = "END! status : "+status+" maxX : "+maxX+"\tcoins : "+coins+"\tkills : "+kills+"\tepsilon : "+epsilon;
+        	System.out.println(endStatus);
+    		recorder.saveTrainingRecord(endStatus);
         }
         state = nextState;
         marioInfo = nextMarioInfo;

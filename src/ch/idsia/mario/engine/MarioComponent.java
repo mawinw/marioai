@@ -276,6 +276,9 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
         scene.init();
     }
 
+    public int getMarioStatus() {
+    	return ((LevelScene) scene).mario.getStatus();
+    }
     public void levelFailed() {
 //        scene = mapScene;
         Mario.lives--;

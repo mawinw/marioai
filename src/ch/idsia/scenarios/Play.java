@@ -37,7 +37,7 @@ public class Play {
         //Agent controller = new AStarKillerMaw();
         Agent controller = new MawReinforceAgent();
         if (args.length > 0) {
-            controller = new MawReinforceAgent(args[0]);
+            controller = new MawReinforceAgent(args[0]); //use args 0 to set epsilon
         }
         EvaluationOptions options = new CmdLineOptions(new String[0]);
         options.setAgent(controller);
@@ -53,5 +53,6 @@ public class Play {
         task.setOptions(options);
 
         System.out.println ("Score: " + task.evaluate (controller)[0]);
+        System.exit(0); 
     }
 }

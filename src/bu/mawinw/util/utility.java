@@ -76,7 +76,6 @@ public class utility {
 		return true;
 	}
 	public static String padString(String s) {
-		if (verbose < 1) return "";
 		int length = s.length();
 		switch(length) {
 		case 1:
