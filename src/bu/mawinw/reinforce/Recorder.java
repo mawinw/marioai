@@ -88,7 +88,6 @@ public class Recorder {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		this.episode += 1;
 		this.frames = new ArrayList<String>();
 		
 	}

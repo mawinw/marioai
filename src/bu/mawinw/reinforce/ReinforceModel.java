@@ -40,12 +40,12 @@ public class ReinforceModel {
 	public ComputationGraph modelA;
 	public MultiLayerNetwork modelB;
 
-	private double gamma = 0.95;	//discounted reward used at training time?
 	public double epsilon = 0.95;
 	private double epsilonDecay = 0.995;
 	private double epsilonMin = 0.01;
-	private double numAction = 12;
-	//public double learningRate = 0.005; //defined at model compile time
+	private double numAction = 9;
+	//private double gamma = 0.95;	//not used in playing time
+	//public double learningRate = 0.005; //not used in playing time
 	
 	
 	public ReinforceModel() {
@@ -175,18 +175,15 @@ public class ReinforceModel {
 	    int KEY_JUMP = 3; //A
 	    int KEY_SPEED = 4; //B
 		boolean[] ret = new boolean[5]; 
-		if (a==0)     /*<noaction>*/	return ret;
-		else if (a==1)/* R     */ {	ret[KEY_RIGHT] = true;}
-		else if (a==2)/* R J   */ {	ret[KEY_RIGHT] = true;	ret[KEY_JUMP] = true;}
-		else if (a==3)/* R   S */ {	ret[KEY_RIGHT] = true;	ret[KEY_SPEED] = true;}
-		else if (a==4)/* R J S */ {	ret[KEY_RIGHT] = true;	ret[KEY_JUMP] = true;	ret[KEY_SPEED] = true;}
-		else if (a==5)/*   J   */ {	ret[KEY_JUMP] = true;}
-		else if (a==6)/* L     */ {	ret[KEY_LEFT] = true;}
-		else if (a==7)/* L J   */ {	ret[KEY_LEFT] = true;	ret[KEY_JUMP] = true;}
-		else if (a==8)/* L   S */ {	ret[KEY_LEFT] = true;	ret[KEY_SPEED] = true;}
-		else if (a==9)/* L J S */ {	ret[KEY_LEFT] = true;	ret[KEY_JUMP] = true;	ret[KEY_SPEED] = true;}
-		else if (a==10) {	ret[KEY_DOWN] = true;}
-		else if (a==11) {	ret[KEY_RIGHT] = true;}
+		if 		(a==0)/* R     */ {	ret[KEY_RIGHT] = true;}
+		else if (a==1)/* R J   */ {	ret[KEY_RIGHT] = true;	ret[KEY_JUMP] = true;}
+		else if (a==2)/* R   S */ {	ret[KEY_RIGHT] = true;	ret[KEY_SPEED] = true;}
+		else if (a==3)/* R J S */ {	ret[KEY_RIGHT] = true;	ret[KEY_JUMP] = true;	ret[KEY_SPEED] = true;}
+		else if (a==4)/*   J   */ {	ret[KEY_JUMP] = true;}
+		else if (a==5)/* L     */ {	ret[KEY_LEFT] = true;}
+		else if (a==6)/* L J   */ {	ret[KEY_LEFT] = true;	ret[KEY_JUMP] = true;}
+		else if (a==7)/* L   S */ {	ret[KEY_LEFT] = true;	ret[KEY_SPEED] = true;}
+		else if (a==8)/* L J S */ {	ret[KEY_LEFT] = true;	ret[KEY_JUMP] = true;	ret[KEY_SPEED] = true;}
 		return ret;
 	}
 	public int booleanToAction(boolean[] action) {
@@ -200,23 +197,20 @@ public class ReinforceModel {
 	    int KEY_JUMP = 3; //A
 	    int KEY_SPEED = 4; //B
 		boolean[] ret = new boolean[5]; 
-		if		(action[KEY_LEFT]==false&&action[KEY_RIGHT]==false&&action[KEY_DOWN]==false&&action[KEY_JUMP]==false&&action[KEY_SPEED]==false)/*noaction*/ return 0;
-		else if (action[KEY_LEFT]==false&&action[KEY_RIGHT]==true &&action[KEY_DOWN]==false&&action[KEY_JUMP]==false&&action[KEY_SPEED]==false)/* R     */ return 1;
-		else if (action[KEY_LEFT]==false&&action[KEY_RIGHT]==true &&action[KEY_DOWN]==false&&action[KEY_JUMP]==true &&action[KEY_SPEED]==false)/* R J   */ return 2;
-		else if (action[KEY_LEFT]==false&&action[KEY_RIGHT]==true &&action[KEY_DOWN]==false&&action[KEY_JUMP]==false&&action[KEY_SPEED]==true )/* R   S */ return 3;
-		else if (action[KEY_LEFT]==false&&action[KEY_RIGHT]==true &&action[KEY_DOWN]==false&&action[KEY_JUMP]==true &&action[KEY_SPEED]==true )/* R J S */ return 4;
-		else if (action[KEY_LEFT]==false&&action[KEY_RIGHT]==false&&action[KEY_DOWN]==false&&action[KEY_JUMP]==true &&action[KEY_SPEED]==false)/*   J   */ return 5;
-		else if (action[KEY_LEFT]==true &&action[KEY_RIGHT]==false&&action[KEY_DOWN]==false&&action[KEY_JUMP]==false&&action[KEY_SPEED]==false)/* L     */ return 6;
-		else if (action[KEY_LEFT]==true &&action[KEY_RIGHT]==false&&action[KEY_DOWN]==false&&action[KEY_JUMP]==true &&action[KEY_SPEED]==false)/* L J   */ return 7;
-		else if (action[KEY_LEFT]==true &&action[KEY_RIGHT]==false&&action[KEY_DOWN]==false&&action[KEY_JUMP]==false&&action[KEY_SPEED]==true )/* L   S */ return 8;
-		else if (action[KEY_LEFT]==true &&action[KEY_RIGHT]==false&&action[KEY_DOWN]==false&&action[KEY_JUMP]==true &&action[KEY_SPEED]==true )/* L J S */ return 9;
-		else if (action[KEY_LEFT]==false&&action[KEY_RIGHT]==false&&action[KEY_DOWN]==true &&action[KEY_JUMP]==false&&action[KEY_SPEED]==false) return 10;
-		else if (action[KEY_LEFT]==false&&action[KEY_RIGHT]==false&&action[KEY_DOWN]==false&&action[KEY_JUMP]==false&&action[KEY_SPEED]==false) return 11;
-		return 11;
+		if 		(action[KEY_LEFT]==false&&action[KEY_RIGHT]==true &&action[KEY_DOWN]==false&&action[KEY_JUMP]==false&&action[KEY_SPEED]==false)/* R     */ return 0;
+		else if (action[KEY_LEFT]==false&&action[KEY_RIGHT]==true &&action[KEY_DOWN]==false&&action[KEY_JUMP]==true &&action[KEY_SPEED]==false)/* R J   */ return 1;
+		else if (action[KEY_LEFT]==false&&action[KEY_RIGHT]==true &&action[KEY_DOWN]==false&&action[KEY_JUMP]==false&&action[KEY_SPEED]==true )/* R   S */ return 2;
+		else if (action[KEY_LEFT]==false&&action[KEY_RIGHT]==true &&action[KEY_DOWN]==false&&action[KEY_JUMP]==true &&action[KEY_SPEED]==true )/* R J S */ return 3;
+		else if (action[KEY_LEFT]==false&&action[KEY_RIGHT]==false&&action[KEY_DOWN]==false&&action[KEY_JUMP]==true &&action[KEY_SPEED]==false)/*   J   */ return 4;
+		else if (action[KEY_LEFT]==true &&action[KEY_RIGHT]==false&&action[KEY_DOWN]==false&&action[KEY_JUMP]==false&&action[KEY_SPEED]==false)/* L     */ return 5;
+		else if (action[KEY_LEFT]==true &&action[KEY_RIGHT]==false&&action[KEY_DOWN]==false&&action[KEY_JUMP]==true &&action[KEY_SPEED]==false)/* L J   */ return 6;
+		else if (action[KEY_LEFT]==true &&action[KEY_RIGHT]==false&&action[KEY_DOWN]==false&&action[KEY_JUMP]==false&&action[KEY_SPEED]==true )/* L   S */ return 7;
+		else if (action[KEY_LEFT]==true &&action[KEY_RIGHT]==false&&action[KEY_DOWN]==false&&action[KEY_JUMP]==true &&action[KEY_SPEED]==true )/* L J S */ return 8;
+		return 0;
 	}
 	public void setEpsilon(String epsilon) {
 		//DOS does not support floating point arguments so divide it with round instead
-		int round = new Integer(epsilon)*10;
+		int round = new Integer(epsilon)*10-10;
 		for(int i = 0;i<round;i++) {
 
 			this.epsilon = this.epsilon * epsilonDecay;

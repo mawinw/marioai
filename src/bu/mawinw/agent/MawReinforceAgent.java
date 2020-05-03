@@ -27,6 +27,7 @@ public class MawReinforceAgent implements Agent
     private Recorder recorder;
     private ReinforceEnvironment RLEnv;
     private boolean isDone = false;
+    private boolean epSaved = false;
 
     private int ep = 1;
     private byte[][] state;
@@ -39,6 +40,8 @@ public class MawReinforceAgent implements Agent
         setName("MawReinforceAgent");
         reset();
         isNew = false;
+        isDone = false;
+        epSaved = false;
     }
     public MawReinforceAgent(String epsilon)
     {
@@ -46,6 +49,8 @@ public class MawReinforceAgent implements Agent
         reset();
         model.setEpsilon(epsilon);
         isNew = false;
+        isDone = false;
+        epSaved = false;
     }
 
     public void reset()
@@ -63,6 +68,7 @@ public class MawReinforceAgent implements Agent
         RLEnv = new ReinforceEnvironment();
         state = new byte[22][22];
         marioInfo = new float[RLEnv.featureCount+RLEnv.previousActionSize];
+        epSaved = false;
     }
 
     public boolean[] getAction(Environment observation)
@@ -115,8 +121,8 @@ public class MawReinforceAgent implements Agent
         
 		lastX = realMarioPos[0];
 		lastY = realMarioPos[1];
-
-		if(((ch.idsia.mario.engine.MarioComponent) observation).getMarioStatus() == Mario.STATUS_WIN || ((ch.idsia.mario.engine.MarioComponent) observation).getMarioStatus() == Mario.STATUS_DEAD) {
+		int doneStatus = ((ch.idsia.mario.engine.MarioComponent) observation).getMarioStatus();
+		if(doneStatus == Mario.STATUS_WIN || doneStatus == Mario.STATUS_DEAD) {
 			isDone = true;
 		}
 		// This is the call to the simulator (where all the planning work takes place)
@@ -125,25 +131,28 @@ public class MawReinforceAgent implements Agent
 		float[] nextMarioInfo = RLEnv.getObservation(observation, sim.levelScene, actionNo);
         action = model.actionToBoolean(actionNo);
         float reward = RLEnv.reward;
-        recorder.remember(state, marioInfo, actionNo, reward, nextState,nextMarioInfo, isDone);
-        if(isDone) {
+        if(!epSaved)
+        	recorder.remember(state, marioInfo, actionNo, reward, nextState,nextMarioInfo, isDone);
+        if(isDone && !epSaved) {
         	ep++;
         	isDone = false;
         	String status = "RUNNING";
-    		if(sim.levelScene.mario.status == Mario.STATUS_WIN) {
+    		if(doneStatus == Mario.STATUS_WIN) {
     			status = 	"  WIN  ";
     		}
-    		if(sim.levelScene.mario.status == Mario.STATUS_DEAD) {
+    		if(doneStatus == Mario.STATUS_DEAD) {
     			status = 	"  LOSE ";
     		}
     		String maxX = utility.padString(new DecimalFormat("####.0").format(RLEnv.marioMaxX));
     		String coins = utility.padString(Float.toString(sim.levelScene.coinsCollected));
     		String kills = utility.padString(Integer.toString(observation.getKillsTotal()));
     		String epsilon = new DecimalFormat("0.0##").format(model.epsilon); // rounded to 3 decimal places
-
+    		
     		String endStatus = "END! status : "+status+" maxX : "+maxX+"\tcoins : "+coins+"\tkills : "+kills+"\tepsilon : "+epsilon;
         	System.out.println(endStatus);
+        	recorder.saveEp();
     		recorder.saveTrainingRecord(endStatus);
+    		epSaved = true;
         }
         state = nextState;
         marioInfo = nextMarioInfo;
